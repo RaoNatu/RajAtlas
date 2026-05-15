@@ -10,7 +10,7 @@ export default function Badge({ children, color = "sand", className = "" }) {
   return (
     <span
       className={[
-        "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1",
+        "inline-flex max-w-full items-center rounded-full px-2.5 py-1 text-left text-xs font-semibold leading-snug ring-1",
         colorStyles[color],
         className,
       ].join(" ")}

@@ -166,7 +166,7 @@ export default function Geography() {
               Explore one layer at a time
             </h2>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+          <div className="flex flex-wrap gap-2">
             {layers.map((layer) => {
               const Icon = layerIcons[layer];
               return (

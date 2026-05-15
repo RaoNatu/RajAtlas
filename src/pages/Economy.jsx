@@ -166,7 +166,7 @@ export default function Economy() {
               Learn economy by district shape
             </h2>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+          <div className="flex flex-wrap gap-2">
             {Object.keys(economyLayers).map((layer) => {
               const Icon = layerIcons[layer];
               return (

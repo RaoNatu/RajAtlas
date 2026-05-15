@@ -134,7 +134,7 @@ export default function MapExplorer() {
               Learn the first facts in small pieces
             </h2>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+          <div className="flex flex-wrap gap-2">
             {factCategories.map((category) => (
               <button
                 key={category}

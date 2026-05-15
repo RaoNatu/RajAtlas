@@ -100,7 +100,7 @@ export default function History() {
               Move through one era at a time
             </h2>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+          <div className="flex flex-wrap gap-2">
             {historyPeriods.map((period) => (
               <Button
                 key={period.id}

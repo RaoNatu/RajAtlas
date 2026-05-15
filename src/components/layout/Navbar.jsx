@@ -1,4 +1,5 @@
-import { Sparkles } from "lucide-react";
+import { useState } from "react";
+import { Menu, Sparkles, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const navItems = [
@@ -19,6 +20,9 @@ const moduleItems = [
 ];
 
 export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const allItems = [...navItems, ...moduleItems];
+
   const linkClasses = ({ isActive }) =>
     [
       "rounded-lg px-3 py-2 text-sm font-semibold transition",
@@ -44,6 +48,21 @@ export default function Navbar() {
           </span>
         </NavLink>
 
+        <button
+          type="button"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-desert-200 bg-white text-desert-900 shadow-sm transition hover:border-royal-300 hover:text-royal-800 focus:outline-none focus-visible:ring-4 focus-visible:ring-royal-100 lg:hidden"
+          aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+          aria-controls="mobile-navigation"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? (
+            <X className="h-5 w-5" aria-hidden="true" />
+          ) : (
+            <Menu className="h-5 w-5" aria-hidden="true" />
+          )}
+        </button>
+
         <div className="hidden items-center gap-1 lg:flex">
           {navItems.map((item) => (
             <NavLink key={item.to} to={item.to} className={linkClasses}>
@@ -57,22 +76,29 @@ export default function Navbar() {
             </NavLink>
           ))}
         </div>
-
       </nav>
 
-      <div className="border-t border-desert-200 bg-desert-50 px-4 py-3 lg:hidden">
-        <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-          {[...navItems, ...moduleItems].map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={(state) => `${linkClasses(state)} shrink-0`}
-            >
-              {item.label}
-            </NavLink>
-          ))}
+      {menuOpen ? (
+        <div
+          id="mobile-navigation"
+          className="border-t border-desert-200 bg-desert-50 px-4 py-3 lg:hidden"
+        >
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {allItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                onClick={() => setMenuOpen(false)}
+                className={(state) =>
+                  `${linkClasses(state)} flex items-center justify-center text-center`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : null}
     </header>
   );
 }

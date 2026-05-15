@@ -119,7 +119,7 @@ export default function Culture() {
               Filter by visual memory type
             </h2>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+          <div className="flex flex-wrap gap-2">
             {cultureCategories.map((category) => {
               const Icon = categoryIcons[category] || Sparkles;
               return (

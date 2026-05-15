@@ -20,7 +20,7 @@ export default function MapControls({
         {selectedRegion ? <Badge color="blue">{selectedRegion.name} highlighted</Badge> : null}
       </div>
 
-      <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+      <div className="flex flex-wrap gap-2">
         {layers.map((layer) => {
           const isFuture = ["Rivers", "Soil", "Climate"].includes(layer);
           return (
@@ -38,14 +38,34 @@ export default function MapControls({
         })}
       </div>
 
-      <div className="flex gap-2">
-        <Button variant="secondary" size="sm" icon={LocateFixed} onClick={onReset}>
+      <div className="flex flex-wrap gap-2">
+        <Button
+          variant="secondary"
+          size="sm"
+          icon={LocateFixed}
+          onClick={onReset}
+          className="shrink-0"
+        >
           Reset view
         </Button>
-        <Button variant="ghost" size="sm" icon={Maximize2} disabled title="Future zoom control">
+        <Button
+          variant="ghost"
+          size="sm"
+          icon={Maximize2}
+          disabled
+          title="Future zoom control"
+          className="shrink-0"
+        >
           Zoom
         </Button>
-        <Button variant="ghost" size="sm" icon={RotateCcw} disabled title="Future animation replay">
+        <Button
+          variant="ghost"
+          size="sm"
+          icon={RotateCcw}
+          disabled
+          title="Future animation replay"
+          className="shrink-0"
+        >
           Replay
         </Button>
       </div>

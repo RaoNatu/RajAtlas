@@ -39,7 +39,7 @@ export default function Navbar() {
               RajAtlas
             </span>
             <span className="block text-xs font-semibold text-royal-800">
-              Rajasthan GK
+              Rajasthan GK by Natu
             </span>
           </span>
         </NavLink>

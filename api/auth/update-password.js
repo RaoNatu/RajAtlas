@@ -1,4 +1,4 @@
-import { getPool } from "../_db.js";
+import { getDb } from "../_db.js";
 import {
   handleApiError,
   hashPassword,
@@ -25,23 +25,24 @@ export default async function handler(req, res) {
       return sendJson(res, 400, { error: "Use a new password with at least 8 characters." });
     }
 
-    const { rows } = await getPool().query(
-      `select password_hash from rajatlas_users where id = $1 limit 1`,
-      [user.id],
-    );
-    const valid = rows[0]
-      ? await verifyPassword(currentPassword, rows[0].password_hash)
+    const db = await getDb();
+    const current = await db.collection("users").findOne({ _id: user.id });
+    const valid = current
+      ? await verifyPassword(currentPassword, current.passwordHash)
       : false;
 
     if (!valid) {
       return sendJson(res, 401, { error: "Current password is incorrect." });
     }
 
-    await getPool().query(
-      `update rajatlas_users
-       set password_hash = $1, updated_at = now()
-       where id = $2`,
-      [await hashPassword(newPassword), user.id],
+    await db.collection("users").updateOne(
+      { _id: user.id },
+      {
+        $set: {
+          passwordHash: await hashPassword(newPassword),
+          updatedAt: new Date(),
+        },
+      },
     );
 
     return sendJson(res, 200, { ok: true });

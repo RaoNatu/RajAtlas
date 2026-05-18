@@ -104,11 +104,8 @@ export default function MatchQuiz({ quiz, onComplete }) {
             Restart match
           </Button>
         ) : (
-          <Button
-            disabled={Object.keys(answers).length !== total}
-            onClick={checkAnswers}
-          >
-            Check matches
+          <Button onClick={checkAnswers}>
+            {Object.keys(answers).length === total ? "Check matches" : "Check partial matches"}
           </Button>
         )}
       </div>

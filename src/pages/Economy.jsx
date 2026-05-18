@@ -125,6 +125,12 @@ export default function Economy() {
         badge="Economy"
       />
 
+      <div className="mb-6 rounded-lg border border-royal-100 bg-royal-50 p-4 text-sm leading-6 text-royal-950">
+        Learn the economy through place pairs: crops follow soil and rainfall, minerals
+        explain industries, power follows desert sun, wind, dams, and fuel, and transport
+        connects tourism, border districts, and markets.
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatsCard
           label="Economy layers"

@@ -22,6 +22,7 @@ import { currentDistrictIds, districts } from "../data/districts";
 import { introFacts } from "../data/introFacts";
 import { regions } from "../data/regions";
 import { useAuth } from "../contexts/AuthContext";
+import { useLanguage } from "../contexts/LanguageContext";
 import { useProgress } from "../hooks/useProgress";
 import hawaMahal from "../assets/photos/hawa-mahal.jpg";
 import mehrangarhFort from "../assets/photos/mehrangarh-fort.jpg";
@@ -72,6 +73,7 @@ const modules = [
 export default function Home() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const { progress, completionPercentage, markTopicComplete } = useProgress();
   const challengeDone = progress.completedTopics?.includes("daily-district-challenge");
 
@@ -83,17 +85,16 @@ export default function Home() {
           alt="Hawa Mahal in Jaipur"
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-desert-900/84 via-desert-900/38 to-royal-900/72" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/88 via-black/64 to-black/38" />
+        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/70 to-transparent" />
         <div className="relative mx-auto flex min-h-[72vh] max-w-7xl flex-col justify-end px-4 pb-10 pt-20 text-white sm:px-6 lg:px-8 lg:pb-14 lg:pt-28">
-          <div className="max-w-4xl">
-            <Badge color="gold">Rajasthan GK companion</Badge>
+          <div className="hero-readable max-w-3xl">
+            <Badge color="gold">{t("heroBadge")}</Badge>
             <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
-              RajAtlas
+              {t("heroTitle")}
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-8 text-desert-50 sm:text-lg">
-              A visual study workspace for Rajasthan GK: district maps, exam-ready
-              facts, revision cards, quizzes, and a secure account dashboard built
-              for repeated practice.
+              {t("heroCopy")}
             </p>
             <div className="mt-8 grid w-[calc(100vw-3rem)] max-w-xl gap-3 sm:flex sm:w-auto sm:flex-wrap">
               <Button
@@ -101,7 +102,7 @@ export default function Home() {
                 icon={Compass}
                 onClick={() => navigate("/map")}
               >
-                Explore Map
+                {t("exploreMap")}
               </Button>
               <Button
                 className="w-full sm:w-auto"
@@ -109,7 +110,7 @@ export default function Home() {
                 icon={Brain}
                 onClick={() => navigate("/quiz")}
               >
-                Start Quiz
+                {t("startQuiz")}
               </Button>
               <Button
                 className="w-full sm:w-auto"
@@ -117,7 +118,7 @@ export default function Home() {
                 icon={Trophy}
                 onClick={() => navigate("/progress")}
               >
-                View Progress
+                {t("viewProgress")}
               </Button>
               <Button
                 className="w-full sm:w-auto"
@@ -125,7 +126,7 @@ export default function Home() {
                 icon={BookOpen}
                 onClick={() => navigate("/learn")}
               >
-                Revision Lab
+                {t("revisionLab")}
               </Button>
               <Button
                 className="w-full sm:w-auto"
@@ -133,15 +134,15 @@ export default function Home() {
                 icon={UserRound}
                 onClick={() => navigate(user ? "/dashboard" : "/register")}
               >
-                {user ? "Dashboard" : "Create Account"}
+                {user ? t("dashboard") : t("createAccount")}
               </Button>
             </div>
           </div>
 
           <div className="mt-10 grid w-[calc(100vw-3rem)] max-w-full gap-4 sm:w-full sm:grid-cols-3">
-            <HeroStat label="Current districts" value={currentDistrictIds.length} />
-            <HeroStat label="Regions" value={regions.length} />
-            <HeroStat label="Learning cards" value={introFacts.length + districts.length} />
+            <HeroStat label={t("currentDistricts")} value={currentDistrictIds.length} />
+            <HeroStat label={t("regionsCount")} value={regions.length} />
+            <HeroStat label={t("learningCards")} value={introFacts.length + districts.length} />
           </div>
         </div>
       </section>

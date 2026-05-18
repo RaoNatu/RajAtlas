@@ -349,6 +349,30 @@ export const economyQuiz = [
     answer: "Copper",
     options: ["Copper", "Salt", "Marble", "Petroleum"],
   },
+  {
+    id: "eco-makrana",
+    question: "Makrana is best remembered for which resource?",
+    answer: "Marble",
+    options: ["Marble", "Petroleum", "Copper", "Wool"],
+  },
+  {
+    id: "eco-hadoti-crop",
+    question: "Kota-Bundi-Jhalawar and black soil are strong anchors for which crop memory?",
+    answer: "Soybean",
+    options: ["Soybean", "Tea", "Rubber", "Coconut"],
+  },
+  {
+    id: "eco-jodhpur-sector",
+    question: "Jodhpur is a strong anchor for which economy-culture sector?",
+    answer: "Handicrafts and furniture",
+    options: ["Handicrafts and furniture", "Marine fishing", "Tea gardens", "Shipbuilding"],
+  },
+  {
+    id: "eco-north-canal",
+    question: "Sri Ganganagar and Hanumangarh are best linked with which agriculture driver?",
+    answer: "Canal irrigation",
+    options: ["Canal irrigation", "Coastal rainfall", "Snowmelt farming", "Tea terraces"],
+  },
 ];
 
 export const economyLayers = {

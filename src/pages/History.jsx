@@ -13,6 +13,7 @@ import Badge from "../components/common/Badge";
 import Button from "../components/common/Button";
 import Card from "../components/common/Card";
 import PageHeader from "../components/layout/PageHeader";
+import RajasthanMap from "../components/map/RajasthanMap";
 import StatsCard from "../components/dashboard/StatsCard";
 import Timeline from "../components/learning/Timeline";
 import MCQQuiz from "../components/quiz/MCQQuiz";
@@ -47,8 +48,19 @@ export default function History() {
     () => ancientSites.find((site) => site.id === selectedSiteId) || ancientSites[0],
     [selectedSiteId],
   );
+  const siteDistrictIds = useMemo(
+    () => [...new Set(ancientSites.map((site) => site.districtId).filter(Boolean))],
+    [],
+  );
   const siteStudied = progress.completedTopics.includes(selectedSite.id);
   const siteSaved = isBookmarked(`history-${selectedSite.id}`);
+
+  function selectSiteByDistrict(district) {
+    const matchingSite = ancientSites.find((site) => site.districtId === district.id);
+    if (matchingSite) {
+      setSelectedSiteId(matchingSite.id);
+    }
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -58,6 +70,107 @@ export default function History() {
         description="Study Rajasthan history through period lanes, ancient site cards, medieval kingdom anchors, movement stories, integration timeline, and recall quizzes."
         badge="History"
       />
+
+      <div className="mb-6 rounded-lg border border-royal-100 bg-royal-50 p-4 text-sm leading-6 text-royal-950">
+        Start with the map, then move through time. Ancient sites explain early settlement,
+        medieval kingdoms explain forts and rulers, movements explain modern politics, and
+        integration explains how today's Rajasthan was formed.
+      </div>
+
+      <section className="mb-8 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+        <Card className="p-6">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-wide text-royal-800">
+                Ancient civilizations
+              </p>
+              <h2 className="mt-2 text-2xl font-black text-desert-900">
+                Site map memory board
+              </h2>
+            </div>
+            <Badge color="gold">Click a site</Badge>
+          </div>
+
+          <div className="relative mt-6 min-h-[360px] overflow-hidden rounded-lg border border-desert-200 bg-desert-50">
+            <RajasthanMap
+              selectedDistrictId={selectedSite.districtId}
+              highlightedDistrictIds={siteDistrictIds}
+              emphasizedDistrictIds={[selectedSite.districtId]}
+              onSelectDistrict={selectSiteByDistrict}
+              ariaLabel="Rajasthan map showing ancient history sites"
+              showAttribution={false}
+              className="h-full border-0 bg-white/80 p-1 shadow-none"
+            />
+            {ancientSites.map((site) => {
+              const selected = site.id === selectedSite.id;
+              return (
+                <button
+                  key={site.id}
+                  type="button"
+                  onClick={() => setSelectedSiteId(site.id)}
+                  className={[
+                    "absolute -translate-x-1/2 -translate-y-1/2 rounded-lg px-3 py-2 text-xs font-black shadow-soft transition",
+                    selected
+                      ? "bg-royal-700 text-white ring-4 ring-royal-200"
+                      : "bg-white text-desert-900 ring-1 ring-desert-200 hover:ring-royal-300",
+                  ].join(" ")}
+                  style={{ left: `${site.coordinates.x}%`, top: `${site.coordinates.y}%` }}
+                >
+                  {site.name}
+                </button>
+              );
+            })}
+          </div>
+        </Card>
+
+        <Card className="p-6">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <Badge color="blue">{selectedSite.period}</Badge>
+              <h2 className="mt-3 text-2xl font-black text-desert-900">
+                {selectedSite.name}
+              </h2>
+              <p className="mt-1 text-sm font-bold text-desert-600">
+                District: {selectedSite.district}
+              </p>
+            </div>
+            <Button
+              variant={siteSaved ? "primary" : "outline"}
+              size="sm"
+              icon={Bookmark}
+              onClick={() =>
+                toggleBookmark({
+                  id: `history-${selectedSite.id}`,
+                  title: selectedSite.name,
+                  type: "Ancient site",
+                  category: "History",
+                  path: "/history",
+                })
+              }
+            >
+              {siteSaved ? "Saved" : "Save"}
+            </Button>
+          </div>
+          <p className="mt-4 rounded-lg bg-royal-50 p-4 text-sm font-semibold leading-6 text-royal-900">
+            {selectedSite.memoryHook}
+          </p>
+          <div className="mt-5 grid gap-2">
+            {selectedSite.facts.map((fact) => (
+              <div key={fact} className="rounded-lg bg-desert-50 px-3 py-2 text-sm font-semibold text-desert-800">
+                {fact}
+              </div>
+            ))}
+          </div>
+          <Button
+            className="mt-5 w-full"
+            variant={siteStudied ? "secondary" : "primary"}
+            icon={siteStudied ? CheckCircle2 : ScrollText}
+            onClick={() => markTopicComplete(selectedSite.id, selectedSite.name, "History")}
+          >
+            {siteStudied ? "Studied" : "Mark site studied"}
+          </Button>
+        </Card>
+      </section>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatsCard
@@ -139,92 +252,6 @@ export default function History() {
               ))}
             </div>
           </div>
-        </Card>
-      </section>
-
-      <section className="mt-8 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-        <Card className="p-6">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-wide text-royal-800">
-                Ancient civilizations
-              </p>
-              <h2 className="mt-2 text-2xl font-black text-desert-900">
-                Site map memory board
-              </h2>
-            </div>
-            <Badge color="gold">Click a site</Badge>
-          </div>
-
-          <div className="map-grid relative mt-6 h-[360px] overflow-hidden rounded-lg border border-desert-200 bg-desert-50">
-            {ancientSites.map((site) => {
-              const selected = site.id === selectedSite.id;
-              return (
-                <button
-                  key={site.id}
-                  type="button"
-                  onClick={() => setSelectedSiteId(site.id)}
-                  className={[
-                    "absolute -translate-x-1/2 -translate-y-1/2 rounded-lg px-3 py-2 text-xs font-black shadow-soft transition",
-                    selected
-                      ? "bg-royal-700 text-white ring-4 ring-royal-200"
-                      : "bg-white text-desert-900 ring-1 ring-desert-200 hover:ring-royal-300",
-                  ].join(" ")}
-                  style={{ left: `${site.coordinates.x}%`, top: `${site.coordinates.y}%` }}
-                >
-                  {site.name}
-                </button>
-              );
-            })}
-          </div>
-        </Card>
-
-        <Card className="p-6">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <Badge color="blue">{selectedSite.period}</Badge>
-              <h2 className="mt-3 text-2xl font-black text-desert-900">
-                {selectedSite.name}
-              </h2>
-              <p className="mt-1 text-sm font-bold text-desert-600">
-                District: {selectedSite.district}
-              </p>
-            </div>
-            <Button
-              variant={siteSaved ? "primary" : "outline"}
-              size="sm"
-              icon={Bookmark}
-              onClick={() =>
-                toggleBookmark({
-                  id: `history-${selectedSite.id}`,
-                  title: selectedSite.name,
-                  type: "Ancient site",
-                  category: "History",
-                  path: "/history",
-                })
-              }
-            >
-              {siteSaved ? "Saved" : "Save"}
-            </Button>
-          </div>
-          <p className="mt-4 rounded-lg bg-royal-50 p-4 text-sm font-semibold leading-6 text-royal-900">
-            {selectedSite.memoryHook}
-          </p>
-          <div className="mt-5 grid gap-2">
-            {selectedSite.facts.map((fact) => (
-              <div key={fact} className="rounded-lg bg-desert-50 px-3 py-2 text-sm font-semibold text-desert-800">
-                {fact}
-              </div>
-            ))}
-          </div>
-          <Button
-            className="mt-5 w-full"
-            variant={siteStudied ? "secondary" : "primary"}
-            icon={siteStudied ? CheckCircle2 : ScrollText}
-            onClick={() => markTopicComplete(selectedSite.id, selectedSite.name, "History")}
-          >
-            {siteStudied ? "Studied" : "Mark site studied"}
-          </Button>
         </Card>
       </section>
 

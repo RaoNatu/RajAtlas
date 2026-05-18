@@ -1,4 +1,4 @@
-import { getPool } from "../_db.js";
+import { getDb } from "../_db.js";
 import {
   destroyCurrentSession,
   handleApiError,
@@ -18,17 +18,16 @@ export default async function handler(req, res) {
 
     const body = await readJson(req);
     const password = String(body.password || "");
-    const { rows } = await getPool().query(
-      `select password_hash from rajatlas_users where id = $1 limit 1`,
-      [user.id],
-    );
-    const valid = rows[0] ? await verifyPassword(password, rows[0].password_hash) : false;
+    const db = await getDb();
+    const current = await db.collection("users").findOne({ _id: user.id });
+    const valid = current ? await verifyPassword(password, current.passwordHash) : false;
 
     if (!valid) {
       return sendJson(res, 401, { error: "Current password is incorrect." });
     }
 
-    await getPool().query("delete from rajatlas_users where id = $1", [user.id]);
+    await db.collection("users").deleteOne({ _id: user.id });
+    await db.collection("sessions").deleteMany({ userId: user.id });
     await destroyCurrentSession(req, res);
     return sendJson(res, 200, { ok: true });
   } catch (error) {

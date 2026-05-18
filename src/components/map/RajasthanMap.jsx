@@ -10,6 +10,8 @@ export default function RajasthanMap({
   highlightedDistrictIds: customHighlightedDistrictIds,
   emphasizedDistrictIds: customEmphasizedDistrictIds,
   lineFeatures = [],
+  ariaLabel,
+  showAttribution,
   className = "",
 }) {
   const highlightedDistrictIds = customHighlightedDistrictIds || selectedRegion?.districts || [];
@@ -35,6 +37,8 @@ export default function RajasthanMap({
       districtFillMap={fillMap}
       lineFeatures={lineFeatures}
       onSelectDistrict={onSelectDistrict}
+      ariaLabel={ariaLabel}
+      showAttribution={showAttribution}
       className={className}
     />
   );

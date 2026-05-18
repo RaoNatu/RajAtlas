@@ -257,6 +257,42 @@ export const politicsQuiz = [
     correctAnswer: "Jodhpur",
     explanation: "The principal seat is at Jodhpur, with a permanent bench at Jaipur.",
   },
+  {
+    id: "pol-unicameral",
+    type: "mcq",
+    category: "Politics",
+    question: "Rajasthan's legislature is best described as:",
+    options: ["Unicameral", "Bicameral", "Federal only", "No elected house"],
+    correctAnswer: "Unicameral",
+    explanation: "Rajasthan has one legislative house, the Legislative Assembly.",
+  },
+  {
+    id: "pol-lok-sabha",
+    type: "mcq",
+    category: "Politics",
+    question: "How many Lok Sabha seats does Rajasthan have?",
+    options: ["25", "10", "33", "41"],
+    correctAnswer: "25",
+    explanation: "Rajasthan sends 25 members to the Lok Sabha.",
+  },
+  {
+    id: "pol-panchayati-raj",
+    type: "mcq",
+    category: "Politics",
+    question: "Nagaur is an important polity anchor because it is linked with which event?",
+    options: ["Panchayati Raj launch", "High Court founding", "First assembly dissolution", "Rajya Sabha creation"],
+    correctAnswer: "Panchayati Raj launch",
+    explanation: "Panchayati Raj was inaugurated in Rajasthan at Nagaur in 1959.",
+  },
+  {
+    id: "pol-local-tier",
+    type: "mcq",
+    category: "Politics",
+    question: "Which institution is the district-level rural local governance body?",
+    options: ["Zila Parishad", "Gram Sabha only", "Municipal Corporation", "High Court bench"],
+    correctAnswer: "Zila Parishad",
+    explanation: "The rural local governance ladder is Gram Panchayat, Panchayat Samiti, and Zila Parishad.",
+  },
 ];
 
 export const politicsTopics = [

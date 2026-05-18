@@ -50,6 +50,13 @@ export default function MapExplorer() {
 
   const selectedRegion = regions.find((region) => region.id === selectedRegionId);
   const visibleDistricts = useMemo(() => buildMapSearchResults(query), [query]);
+  useEffect(() => {
+    if (!query || !visibleDistricts.length) return;
+    if (!visibleDistricts.some((district) => district.id === selectedDistrict?.id)) {
+      setSelectedDistrict(visibleDistricts[0]);
+    }
+  }, [query, selectedDistrict?.id, visibleDistricts]);
+
   const layerView = useMemo(
     () => buildLayerView(activeLayer, selectedRegion),
     [activeLayer, selectedRegion],
@@ -100,7 +107,7 @@ export default function MapExplorer() {
               <SearchBar
                 value={query}
                 onChange={setQuery}
-                placeholder="Search district, region, division, nickname"
+                placeholder="Search district, city, fort, river, region, division"
               />
               <select
                 value={selectedRegionId}
@@ -115,6 +122,28 @@ export default function MapExplorer() {
                 ))}
               </select>
             </div>
+            {query ? (
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-sm" aria-live="polite">
+                <span className="font-bold text-desert-700">
+                  {visibleDistricts.length} result{visibleDistricts.length === 1 ? "" : "s"}
+                </span>
+                {visibleDistricts.slice(0, 6).map((district) => (
+                  <button
+                    key={district.id}
+                    type="button"
+                    onClick={() => setSelectedDistrict(district)}
+                    className={[
+                      "rounded-full px-3 py-1.5 text-xs font-bold ring-1 transition",
+                      selectedDistrict?.id === district.id
+                        ? "bg-royal-700 text-white ring-royal-700"
+                        : "bg-white text-desert-800 ring-desert-200 hover:text-royal-800",
+                    ].join(" ")}
+                  >
+                    {district.name}
+                  </button>
+                ))}
+              </div>
+            ) : null}
           </Card>
 
           <MapControls

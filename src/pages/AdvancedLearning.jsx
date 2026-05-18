@@ -24,6 +24,7 @@ import {
 import Badge from "../components/common/Badge";
 import Button from "../components/common/Button";
 import Card from "../components/common/Card";
+import EmptyState from "../components/common/EmptyState";
 import ProgressBar from "../components/common/ProgressBar";
 import SearchBar from "../components/common/SearchBar";
 import StatsCard from "../components/dashboard/StatsCard";
@@ -221,8 +222,9 @@ function SearchPanel({
         </select>
       </Card>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        {results.map((item) => {
+      {results.length ? (
+        <div className="grid gap-4 md:grid-cols-2">
+          {results.map((item) => {
           const saved = isBookmarked(item.id);
           return (
             <Card key={item.id} className="flex h-full flex-col p-5" interactive>
@@ -256,8 +258,14 @@ function SearchPanel({
               </Link>
             </Card>
           );
-        })}
-      </div>
+          })}
+        </div>
+      ) : (
+        <EmptyState
+          title="No results found"
+          description="Try another spelling, search a district name, or switch the scope back to All."
+        />
+      )}
     </section>
   );
 }

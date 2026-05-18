@@ -125,6 +125,12 @@ export default function Geography() {
         badge="Geography"
       />
 
+      <div className="mb-6 rounded-lg border border-royal-100 bg-royal-50 p-4 text-sm leading-6 text-royal-950">
+        For beginners, study geography in this order: first locate the Aravalli range and
+        Thar Desert, then learn rivers and lakes, then connect soil, crops, wildlife,
+        irrigation, and population facts to the same map.
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatsCard
           label="Map layers"

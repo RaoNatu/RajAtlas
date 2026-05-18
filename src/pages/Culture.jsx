@@ -78,6 +78,12 @@ export default function Culture() {
         badge="Culture"
       />
 
+      <div className="mb-6 rounded-lg border border-royal-100 bg-royal-50 p-4 text-sm leading-6 text-royal-950">
+        Culture is easiest when every art form has a place: dances and music belong to
+        communities, crafts belong to towns, paintings belong to schools, and festivals
+        belong to seasons and local stories.
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatsCard
           label="Culture categories"

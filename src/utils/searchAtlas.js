@@ -171,7 +171,7 @@ export function buildSearchIndex() {
 }
 
 export function searchAtlas(query, scope = "All") {
-  const normalizedQuery = query.trim().toLowerCase();
+  const normalizedQuery = normalizeSearch(query);
   const index = buildSearchIndex();
   const scoped = scope === "All" ? index : index.filter((item) => item.module === scope);
 
@@ -188,11 +188,11 @@ export function searchAtlas(query, scope = "All") {
       ]
         .filter(Boolean)
         .join(" ")
-        .toLowerCase();
+        .replace(/([a-z])([A-Z])/g, "$1 $2");
 
       return {
         ...item,
-        score: scoreMatch(haystack, normalizedQuery, item.title.toLowerCase()),
+        score: scoreMatch(normalizeSearch(haystack), normalizedQuery, normalizeSearch(item.title)),
       };
     })
     .filter((item) => item.score > 0)
@@ -201,10 +201,18 @@ export function searchAtlas(query, scope = "All") {
 }
 
 function scoreMatch(haystack, query, title) {
+  const terms = query.split(" ").filter(Boolean);
   if (title === query) return 4;
   if (title.includes(query)) return 3;
   if (haystack.includes(query)) return 2;
-  return query
-    .split(/\s+/)
-    .filter((part) => part.length > 2 && haystack.includes(part)).length;
+  return terms.filter((part) => part.length > 1 && haystack.includes(part)).length;
+}
+
+function normalizeSearch(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[-_/]/g, " ")
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }

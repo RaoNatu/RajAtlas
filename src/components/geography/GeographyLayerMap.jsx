@@ -101,6 +101,25 @@ export default function GeographyLayerMap({ activeLayer, selectedItem, onSelectI
               <p className="mt-3 text-sm leading-6 text-desert-800">
                 {selectedItem.memoryHook || selectedItem.note || selectedItem.description}
               </p>
+              {selectedItem.origin || selectedItem.flow || selectedItem.sourceNote ? (
+                <div className="mt-4 space-y-2 border-t border-desert-200 pt-4 text-sm leading-6 text-desert-700">
+                  {selectedItem.origin ? (
+                    <p>
+                      <span className="font-black text-desert-900">Origin:</span>{" "}
+                      {selectedItem.origin}
+                    </p>
+                  ) : null}
+                  {selectedItem.flow ? (
+                    <p>
+                      <span className="font-black text-desert-900">Flow:</span>{" "}
+                      {selectedItem.flow}
+                    </p>
+                  ) : null}
+                  {selectedItem.sourceNote ? (
+                    <p className="text-xs font-bold text-royal-800">{selectedItem.sourceNote}</p>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           ) : null}
         </div>

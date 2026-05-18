@@ -1,4 +1,4 @@
-import { getPool, publicUser } from "../_db.js";
+import { getDb, publicUser } from "../_db.js";
 import {
   handleApiError,
   methodNotAllowed,
@@ -24,33 +24,24 @@ export default async function handler(req, res) {
       return sendJson(res, 400, { error: "Enter a valid email address." });
     }
 
-    const current = await getUserWithPassword(user.id);
-    const valid = current ? await verifyPassword(password, current.password_hash) : false;
+    const db = await getDb();
+    const current = await db.collection("users").findOne({ _id: user.id });
+    const valid = current ? await verifyPassword(password, current.passwordHash) : false;
     if (!valid) {
       return sendJson(res, 401, { error: "Current password is incorrect." });
     }
 
-    const { rows } = await getPool().query(
-      `update rajatlas_users
-       set email = $1, updated_at = now()
-       where id = $2
-       returning id, name, email, created_at, updated_at`,
-      [email, user.id],
+    await db.collection("users").updateOne(
+      { _id: user.id },
+      { $set: { email, updatedAt: new Date() } },
     );
+    const updatedUser = await db.collection("users").findOne({ _id: user.id });
 
-    return sendJson(res, 200, { user: publicUser(rows[0]) });
+    return sendJson(res, 200, { user: publicUser(updatedUser) });
   } catch (error) {
-    if (error?.code === "23505") {
+    if (error?.code === 11000) {
       return sendJson(res, 409, { error: "This email is already in use." });
     }
     return handleApiError(res, error);
   }
-}
-
-async function getUserWithPassword(userId) {
-  const { rows } = await getPool().query(
-    `select id, password_hash from rajatlas_users where id = $1 limit 1`,
-    [userId],
-  );
-  return rows[0];
 }

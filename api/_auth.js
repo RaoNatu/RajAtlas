@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import { ensureAuthSchema, getPool, publicUser } from "./_db.js";
+import { ensureAuthSchema, getDb, publicUser } from "./_db.js";
 
 const SESSION_COOKIE = "rajatlas_session";
 const SESSION_DAYS = 30;
@@ -26,9 +26,9 @@ export function methodNotAllowed(res) {
 }
 
 export function handleApiError(res, error) {
-  if (error?.message === "DATABASE_URL is not configured.") {
+  if (error?.message === "MONGODB_URI is not configured.") {
     sendJson(res, 503, {
-      error: "Authentication database is not configured.",
+      error: "MongoDB Atlas connection is not configured.",
     });
     return;
   }
@@ -66,17 +66,19 @@ export async function verifyPassword(password, storedHash) {
 export async function createSession(res, userId) {
   await ensureAuthSchema();
 
-  const pool = getPool();
+  const db = await getDb();
   const id = crypto.randomUUID();
   const token = crypto.randomBytes(32).toString("hex");
   const tokenHash = hashSessionToken(token);
   const expiresAt = new Date(Date.now() + SESSION_MAX_AGE * 1000);
 
-  await pool.query(
-    `insert into rajatlas_sessions (id, user_id, token_hash, expires_at)
-     values ($1, $2, $3, $4)`,
-    [id, userId, tokenHash, expiresAt],
-  );
+  await db.collection("sessions").insertOne({
+    _id: id,
+    userId,
+    tokenHash,
+    expiresAt,
+    createdAt: new Date(),
+  });
 
   res.setHeader("Set-Cookie", buildCookie(`${id}.${token}`, SESSION_MAX_AGE));
 }
@@ -90,18 +92,16 @@ export async function getCurrentUser(req) {
   const [sessionId, token] = sessionValue.split(".");
   if (!sessionId || !token) return null;
 
-  const { rows } = await getPool().query(
-    `select u.*
-     from rajatlas_sessions s
-     join rajatlas_users u on u.id = s.user_id
-     where s.id = $1
-       and s.expires_at > now()
-       and s.token_hash = $2
-     limit 1`,
-    [sessionId, hashSessionToken(token)],
-  );
+  const db = await getDb();
+  const session = await db.collection("sessions").findOne({
+    _id: sessionId,
+    tokenHash: hashSessionToken(token),
+    expiresAt: { $gt: new Date() },
+  });
+  if (!session) return null;
 
-  return publicUser(rows[0]);
+  const user = await db.collection("users").findOne({ _id: session.userId });
+  return publicUser(user);
 }
 
 export async function requireUser(req, res) {
@@ -119,7 +119,8 @@ export async function destroyCurrentSession(req, res) {
   const sessionValue = parseCookies(req.headers.cookie || "")[SESSION_COOKIE];
   const [sessionId] = String(sessionValue || "").split(".");
   if (sessionId) {
-    await getPool().query("delete from rajatlas_sessions where id = $1", [sessionId]);
+    const db = await getDb();
+    await db.collection("sessions").deleteOne({ _id: sessionId });
   }
 
   res.setHeader("Set-Cookie", buildCookie("", 0));

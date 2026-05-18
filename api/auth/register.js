@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import { ensureAuthSchema, getPool, publicUser } from "../_db.js";
+import { ensureAuthSchema, getDb, publicUser } from "../_db.js";
 import {
   createSession,
   handleApiError,
@@ -33,17 +33,21 @@ export default async function handler(req, res) {
 
     const passwordHash = await hashPassword(password);
     const id = crypto.randomUUID();
-    const { rows } = await getPool().query(
-      `insert into rajatlas_users (id, name, email, password_hash)
-       values ($1, $2, $3, $4)
-       returning id, name, email, created_at, updated_at`,
-      [id, name, email, passwordHash],
-    );
+    const user = {
+      _id: id,
+      name,
+      email,
+      passwordHash,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    const db = await getDb();
+    await db.collection("users").insertOne(user);
 
     await createSession(res, id);
-    return sendJson(res, 201, { user: publicUser(rows[0]) });
+    return sendJson(res, 201, { user: publicUser(user) });
   } catch (error) {
-    if (error?.code === "23505") {
+    if (error?.code === 11000) {
       return sendJson(res, 409, { error: "An account already exists for this email." });
     }
     return handleApiError(res, error);

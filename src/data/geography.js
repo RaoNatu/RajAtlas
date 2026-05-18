@@ -358,4 +358,39 @@ export const geographyQuiz = [
     answer: "Churu",
     options: ["Churu", "Udaipur", "Kota", "Dholpur"],
   },
+  {
+    id: "geo-luni-origin",
+    question: "The Luni river begins near which Rajasthan geography anchor?",
+    answer: "Ajmer / Pushkar valley",
+    options: ["Ajmer / Pushkar valley", "Mount Abu plateau", "Bharatpur wetland", "Kota barrage"],
+  },
+  {
+    id: "geo-mahi-pair",
+    question: "Which southern district is the strongest quick pair for the Mahi river?",
+    answer: "Banswara",
+    options: ["Banswara", "Churu", "Dausa", "Nagaur"],
+  },
+  {
+    id: "geo-keoladeo",
+    question: "Keoladeo National Park is located in which district?",
+    answer: "Bharatpur",
+    options: ["Bharatpur", "Jalore", "Bikaner", "Bundi"],
+  },
+  {
+    id: "geo-aravalli-direction",
+    question: "The Aravalli range helps divide Rajasthan into which broad memory pattern?",
+    answer: "Drier west and more river-linked east",
+    options: [
+      "Drier west and more river-linked east",
+      "Coastal west and icy east",
+      "Only desert everywhere",
+      "Only delta plains",
+    ],
+  },
+  {
+    id: "geo-desert-national-park",
+    question: "Desert National Park is mainly tied to which district belt?",
+    answer: "Jaisalmer / Barmer",
+    options: ["Jaisalmer / Barmer", "Jaipur / Dausa", "Kota / Bundi", "Alwar / Bharatpur"],
+  },
 ];

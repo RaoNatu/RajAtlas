@@ -1,6 +1,6 @@
 # RajAtlas
 
-RajAtlas is a production-ready Rajasthan GK learning app built with React, Vite, and Postgres-backed account authentication. It turns districts, regions, geography, economy, polity, history, culture, quizzes, bookmarks, and progress tracking into a visual study flow for exam preparation.
+RajAtlas is a production-ready Rajasthan GK learning app built with React, Vite, and MongoDB Atlas-backed account authentication. It turns districts, regions, geography, economy, polity, history, culture, quizzes, bookmarks, and progress tracking into a visual study flow for exam preparation.
 
 ## Features
 
@@ -9,7 +9,7 @@ RajAtlas is a production-ready Rajasthan GK learning app built with React, Vite,
 - Quiz practice, flashcards, bookmarks, daily challenges, and progress tracking.
 - Secure registration, login, account dashboard, email changes, password changes, and account deletion.
 - Responsive dashboard-style UI built for repeated study sessions.
-- Vercel API routes for Postgres-backed user accounts.
+- Vercel API routes for MongoDB Atlas-backed user accounts.
 
 ## Tech Stack
 
@@ -20,7 +20,7 @@ RajAtlas is a production-ready Rajasthan GK learning app built with React, Vite,
 - Framer Motion
 - Recharts
 - Lucide React
-- pg
+- MongoDB Node.js driver
 
 ## Getting Started
 
@@ -51,11 +51,12 @@ npm run preview
 Configure authentication for production:
 
 ```powershell
-$env:DATABASE_URL="postgresql://user:password@host:5432/database"
+$env:MONGODB_URI="mongodb+srv://user:password@cluster.mongodb.net/?retryWrites=true&w=majority"
+$env:MONGODB_DB="rajatlas"
 npm run build
 ```
 
-Vercel deployments can use `DATABASE_URL`, `POSTGRES_URL`, or `POSTGRES_PRISMA_URL`.
+For Vercel, add `MONGODB_URI` and optional `MONGODB_DB` in Project Settings -> Environment Variables. The serverless auth layer automatically creates the `users` and `sessions` collections plus required indexes on first use, so a free MongoDB Atlas cluster is enough.
 
 ## Project Structure
 

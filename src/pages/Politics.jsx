@@ -59,6 +59,12 @@ export default function Politics() {
         badge="Polity"
       />
 
+      <div className="mb-6 rounded-lg border border-royal-100 bg-royal-50 p-4 text-sm leading-6 text-royal-950">
+        Read polity from top to bottom: Governor is the constitutional head, the Chief
+        Minister leads the elected executive, the Assembly makes laws and controls the
+        government, courts protect rights, and local bodies handle village and city work.
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatsCard
           label="Governance cards"

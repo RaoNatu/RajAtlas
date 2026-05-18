@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useQuiz } from "../../hooks/useQuiz";
+import { useLanguage } from "../../contexts/LanguageContext";
 import QuizCard from "./QuizCard";
 import QuizResult from "./QuizResult";
 
 export default function MCQQuiz({ questions, quizId = "mcq-session", onComplete }) {
+  const { t } = useLanguage();
   const reportRef = useRef(false);
   const sessionCategory = useMemo(
     () => questions[0]?.category || "Rajasthan Introduction",
@@ -38,7 +40,7 @@ export default function MCQQuiz({ questions, quizId = "mcq-session", onComplete 
           reportRef.current = false;
           quiz.restartQuiz();
         }}
-        title="Quiz complete"
+        title={t("quizComplete")}
       />
     );
   }

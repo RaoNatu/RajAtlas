@@ -1,4 +1,4 @@
-import { Layers, LocateFixed, Maximize2, RotateCcw } from "lucide-react";
+import { CircleArrowRight, Layers, LocateFixed, Maximize2 } from "lucide-react";
 import Button from "../common/Button";
 import Badge from "../common/Badge";
 
@@ -13,6 +13,9 @@ export default function MapControls({
   zoomed = false,
   selectedRegion,
 }) {
+  const currentLayerIndex = Math.max(layers.indexOf(activeLayer), 0);
+  const nextLayer = layers[(currentLayerIndex + 1) % layers.length];
+
   return (
     <div className="flex flex-col gap-4 rounded-lg border border-desert-200 bg-white/88 p-4 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -60,12 +63,12 @@ export default function MapControls({
         <Button
           variant="ghost"
           size="sm"
-          icon={RotateCcw}
+          icon={CircleArrowRight}
           onClick={onCycleLayer}
-          title="Move to the next map layer"
+          title={`Switch to ${nextLayer} layer`}
           className="shrink-0"
         >
-          Next layer
+          Show {nextLayer}
         </Button>
       </div>
     </div>

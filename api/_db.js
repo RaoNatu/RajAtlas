@@ -1,19 +1,24 @@
 import { MongoClient } from "mongodb";
 
 let schemaReady;
+const MONGO_URI_ERROR = "MONGODB_URI is not configured.";
 
 export async function getDb() {
   const uri = process.env.MONGODB_URI || process.env.MONGO_URI || process.env.DATABASE_URL;
-  if (!uri || !uri.startsWith("mongodb")) {
-    throw new Error("MONGODB_URI is not configured.");
+  if (!uri || !uri.startsWith("mongodb://") && !uri.startsWith("mongodb+srv://")) {
+    throw new Error(MONGO_URI_ERROR);
   }
 
   if (!globalThis.__rajatlasMongoClientPromise) {
     const client = new MongoClient(uri, {
       appName: "RajAtlas",
       maxPoolSize: 10,
+      serverSelectionTimeoutMS: Number(process.env.MONGODB_TIMEOUT_MS || 8000),
     });
-    globalThis.__rajatlasMongoClientPromise = client.connect();
+    globalThis.__rajatlasMongoClientPromise = client.connect().catch((error) => {
+      globalThis.__rajatlasMongoClientPromise = null;
+      throw error;
+    });
   }
 
   const client = await globalThis.__rajatlasMongoClientPromise;
@@ -44,7 +49,10 @@ export async function ensureAuthSchema() {
         { key: { tokenHash: 1 }, name: "sessions_token_hash" },
         { key: { expiresAt: 1 }, expireAfterSeconds: 0, name: "sessions_expiry_ttl" },
       ]);
-    })();
+    })().catch((error) => {
+      schemaReady = null;
+      throw error;
+    });
   }
 
   return schemaReady;

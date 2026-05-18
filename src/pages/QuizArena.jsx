@@ -9,7 +9,13 @@ import MCQQuiz from "../components/quiz/MCQQuiz";
 import MatchQuiz from "../components/quiz/MatchQuiz";
 import MapDistrictQuiz from "../components/quiz/MapDistrictQuiz";
 import TrueFalseQuiz from "../components/quiz/TrueFalseQuiz";
-import { matchQuizzes, quizCategories, quizzes } from "../data/quizzes";
+import { matchQuizzes, mapDistrictQuizzes, quizCategories, quizzes } from "../data/quizzes";
+import {
+  localizeMapDistrictQuizzes,
+  localizeMatchQuizzes,
+  localizeQuizzes,
+} from "../data/quizLocalization";
+import { useLanguage } from "../contexts/LanguageContext";
 import { useProgress } from "../hooks/useProgress";
 import { filterQuizzesByCategory } from "../utils/quizHelpers";
 
@@ -21,6 +27,7 @@ const quizModes = [
 ];
 
 export default function QuizArena() {
+  const { language, t } = useLanguage();
   const [category, setCategory] = useState("All");
   const [mode, setMode] = useState("single");
   const [matchId, setMatchId] = useState(matchQuizzes[0].id);
@@ -31,18 +38,31 @@ export default function QuizArena() {
     setLastOpenedModule("Quiz Arena");
   }, [setLastOpenedModule]);
 
+  const localizedQuizzes = useMemo(
+    () => localizeQuizzes(quizzes, language),
+    [language],
+  );
+  const localizedMatchQuizzes = useMemo(
+    () => localizeMatchQuizzes(matchQuizzes, language),
+    [language],
+  );
+  const localizedMapDistrictQuizzes = useMemo(
+    () => localizeMapDistrictQuizzes(mapDistrictQuizzes, language),
+    [language],
+  );
+
   const filteredSingleQuestions = useMemo(() => {
-    const byCategory = filterQuizzesByCategory(quizzes, category);
+    const byCategory = filterQuizzesByCategory(localizedQuizzes, category);
     if (mode === "truefalse") {
       return byCategory.filter((quiz) => quiz.type === "truefalse");
     }
     return byCategory.filter((quiz) => quiz.type !== "truefalse");
-  }, [category, mode]);
+  }, [category, localizedQuizzes, mode]);
 
   const filteredMatchQuizzes = useMemo(() => {
-    if (category === "All") return matchQuizzes;
-    return matchQuizzes.filter((quiz) => quiz.category === category);
-  }, [category]);
+    if (category === "All") return localizedMatchQuizzes;
+    return localizedMatchQuizzes.filter((quiz) => quiz.category === category);
+  }, [category, localizedMatchQuizzes]);
 
   const selectedMatchQuiz =
     filteredMatchQuizzes.find((quiz) => quiz.id === matchId) || filteredMatchQuizzes[0];
@@ -50,21 +70,21 @@ export default function QuizArena() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageHeader
-        title="Quiz Arena"
-        description="Practice Rajasthan Introduction with MCQs, true or false, matching, region-to-district, and district info questions."
-        badge="Practice"
+        title={t("quizArenaTitle")}
+        description={t("quizArenaDescription")}
+        badge={t("quizArenaBadge")}
       />
 
       <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
         <Card className="h-fit p-5">
           <div className="flex items-center gap-2">
             <Brain className="h-5 w-5 text-royal-700" aria-hidden="true" />
-            <h2 className="text-lg font-black text-desert-900">Quiz setup</h2>
+            <h2 className="text-lg font-black text-desert-900">{t("quizSetup")}</h2>
           </div>
 
           <div className="mt-5">
             <label className="text-sm font-bold text-desert-700" htmlFor="quiz-category">
-              Category
+              {t("quizCategory")}
             </label>
             <select
               id="quiz-category"
@@ -74,14 +94,14 @@ export default function QuizArena() {
             >
               {quizCategories.map((item) => (
                 <option key={item} value={item}>
-                  {item}
+                  {t(`category.${item}`)}
                 </option>
               ))}
             </select>
           </div>
 
           <div className="mt-5">
-            <p className="text-sm font-bold text-desert-700">Mode</p>
+            <p className="text-sm font-bold text-desert-700">{t("quizMode")}</p>
             <div className="mt-2 grid gap-2">
               {quizModes.map((item) => (
                 <button
@@ -95,7 +115,7 @@ export default function QuizArena() {
                       : "border-desert-200 bg-white text-desert-800 hover:border-royal-200",
                   ].join(" ")}
                 >
-                  {item.label}
+                  {t(`mode.${item.id}`)}
                 </button>
               ))}
             </div>
@@ -104,7 +124,7 @@ export default function QuizArena() {
           {mode === "match" && filteredMatchQuizzes.length ? (
             <div className="mt-5">
               <label className="text-sm font-bold text-desert-700" htmlFor="match-quiz">
-                Match set
+                {t("matchSet")}
               </label>
               <select
                 id="match-quiz"
@@ -124,45 +144,49 @@ export default function QuizArena() {
           <div className="mt-6 rounded-lg bg-desert-50 p-4">
             <div className="flex items-center gap-2 font-black text-desert-900">
               <ListChecks className="h-4 w-4 text-royal-700" aria-hidden="true" />
-              Score tracking
+              {t("scoreTracking")}
             </div>
             <p className="mt-2 text-sm leading-6 text-desert-700">
-              Completed quizzes update your Progress page and Revision Lab analytics.
+              {t("scoreTrackingCopy")}
             </p>
           </div>
         </Card>
 
         <div className="space-y-5">
           <div className="flex flex-wrap gap-2">
-            <Badge color="blue">{category}</Badge>
-            <Badge color="gold">{quizModes.find((item) => item.id === mode)?.label}</Badge>
+            <Badge color="blue">{t(`category.${category}`)}</Badge>
+            <Badge color="gold">{t(`mode.${quizModes.find((item) => item.id === mode)?.id}`)}</Badge>
           </div>
 
           {mode === "map" ? (
-            <MapDistrictQuiz key={`map-${sessionKey}`} onComplete={recordQuizScore} />
+            <MapDistrictQuiz
+              key={`map-${language}-${sessionKey}`}
+              questions={localizedMapDistrictQuizzes}
+              onComplete={recordQuizScore}
+            />
           ) : mode === "match" ? (
             selectedMatchQuiz ? (
               <MatchQuiz
-                key={`${category}-${selectedMatchQuiz.id}-${sessionKey}`}
+                key={`${language}-${category}-${selectedMatchQuiz.id}-${sessionKey}`}
                 quiz={selectedMatchQuiz}
                 onComplete={recordQuizScore}
               />
             ) : (
               <EmptyState
-                title="No matching quiz in this category"
-                description="Choose another category or switch to a different quiz mode."
+                title={t("noMatchTitle")}
+                description={t("noMatchDescription")}
               />
             )
           ) : filteredSingleQuestions.length ? (
             mode === "truefalse" ? (
               <TrueFalseQuiz
-                key={`${category}-${mode}-${sessionKey}`}
+                key={`${language}-${category}-${mode}-${sessionKey}`}
                 questions={filteredSingleQuestions}
                 onComplete={recordQuizScore}
               />
             ) : (
               <MCQQuiz
-                key={`${category}-${mode}-${sessionKey}`}
+                key={`${language}-${category}-${mode}-${sessionKey}`}
                 questions={filteredSingleQuestions}
                 quizId={`${category}-${mode}`}
                 onComplete={recordQuizScore}
@@ -170,8 +194,8 @@ export default function QuizArena() {
             )
           ) : (
             <EmptyState
-              title="No questions available"
-              description="Choose another category or switch to a different quiz mode."
+              title={t("noQuestionsTitle")}
+              description={t("noQuestionsDescription")}
             />
           )}
 
@@ -179,10 +203,10 @@ export default function QuizArena() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-lg font-black text-desert-900">
-                  Practice controls
+                  {t("practiceControls")}
                 </h3>
                 <p className="mt-1 text-sm leading-6 text-desert-700">
-                  Restart the current drill instantly or switch categories from the setup panel.
+                  {t("practiceControlsCopy")}
                 </p>
               </div>
               <Button
@@ -190,7 +214,7 @@ export default function QuizArena() {
                 icon={Repeat2}
                 onClick={() => setSessionKey((value) => value + 1)}
               >
-                Retake current set
+                {t("retakeCurrentSet")}
               </Button>
             </div>
           </Card>

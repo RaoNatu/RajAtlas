@@ -7,8 +7,10 @@ import Button from "../common/Button";
 import Card from "../common/Card";
 import ProgressBar from "../common/ProgressBar";
 import SvgDistrictMap from "../map/SvgDistrictMap";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 export default function MapDistrictQuiz({ questions = mapDistrictQuizzes, onComplete }) {
+  const { t } = useLanguage();
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [feedbackMap, setFeedbackMap] = useState({});
@@ -76,13 +78,13 @@ export default function MapDistrictQuiz({ questions = mapDistrictQuizzes, onComp
           visibleDistricts={districts}
           feedbackMap={feedbackMap}
           onSelectDistrict={chooseDistrict}
-          ariaLabel="District map quiz"
+          ariaLabel={t("districtMapQuiz")}
           className="rounded-none border-0 shadow-none"
         />
 
         <div className="border-t border-desert-200 bg-white p-6 xl:border-l xl:border-t-0">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge color="blue">Map Practice</Badge>
+            <Badge color="blue">{t("mapPractice")}</Badge>
             <Badge color="gold">
               {Math.min(index + 1, questions.length)} / {questions.length}
             </Badge>
@@ -90,13 +92,13 @@ export default function MapDistrictQuiz({ questions = mapDistrictQuizzes, onComp
 
           {isComplete ? (
             <div className="mt-6">
-              <h2 className="text-2xl font-black text-desert-900">Map quiz complete</h2>
+              <h2 className="text-2xl font-black text-desert-900">{t("mapQuizComplete")}</h2>
               <p className="mt-2 text-sm font-semibold text-desert-700">
-                You scored {score} out of {questions.length}.
+                {t("scoredOutOf", { score, total: questions.length })}
               </p>
-              <ProgressBar className="mt-6" value={percentage} label="Map accuracy" />
+              <ProgressBar className="mt-6" value={percentage} label={t("mapAccuracy")} />
               <Button className="mt-6" variant="secondary" icon={RotateCcw} onClick={restart}>
-                Restart map quiz
+                {t("restartMapQuiz")}
               </Button>
             </div>
           ) : (
@@ -105,14 +107,13 @@ export default function MapDistrictQuiz({ questions = mapDistrictQuizzes, onComp
                 {currentQuestion.prompt}
               </h2>
               <p className="mt-3 text-sm leading-6 text-desert-700">
-                Click the district shape directly on the map. Correct answers turn
-                green, and incorrect selections turn red.
+                {t("mapQuizInstruction")}
               </p>
 
               {currentAnswer ? (
                 <div className="mt-5 rounded-lg bg-desert-50 p-4">
                   <p className="font-black text-desert-900">
-                    {currentAnswer.correct ? "Correct" : "Review this district"}
+                    {currentAnswer.correct ? t("correct") : t("reviewThisDistrict")}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-desert-700">
                     {currentQuestion.explanation}
@@ -123,7 +124,7 @@ export default function MapDistrictQuiz({ questions = mapDistrictQuizzes, onComp
                     onClick={nextQuestion}
                     disabled={index === questions.length - 1}
                   >
-                    {index === questions.length - 1 ? "Score saved" : "Next district"}
+                    {index === questions.length - 1 ? t("scoreSaved") : t("nextDistrict")}
                   </Button>
                 </div>
               ) : null}

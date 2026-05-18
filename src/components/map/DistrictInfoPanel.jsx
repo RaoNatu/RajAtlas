@@ -1,9 +1,9 @@
-import { BookMarked, ExternalLink, Landmark, MapPin, Star } from "lucide-react";
+import { useEffect, useState } from "react";
+import { BookMarked, ExternalLink, Landmark, MapPin, Sparkles, Star } from "lucide-react";
 import Badge from "../common/Badge";
 import Button from "../common/Button";
 import Card from "../common/Card";
 import { getDistrictProfile } from "../../data/districtProfiles";
-import fallbackDistrictPhoto from "../../assets/photos/hawa-mahal.jpg";
 
 export default function DistrictInfoPanel({ district, onMarkStudied }) {
   if (!district) {
@@ -22,6 +22,15 @@ export default function DistrictInfoPanel({ district, onMarkStudied }) {
   }
 
   const profile = getDistrictProfile(district);
+  const places = profile.places || [];
+  const [selectedPlaceLabel, setSelectedPlaceLabel] = useState(places[0]?.label || "");
+  const selectedPlace =
+    places.find((place) => place.label === selectedPlaceLabel) || places[0];
+
+  useEffect(() => {
+    setSelectedPlaceLabel(places[0]?.label || "");
+  }, [district.id]);
+
   const rows = [
     ["Status", district.administrativeStatus],
     ["Division", district.division],
@@ -57,28 +66,59 @@ export default function DistrictInfoPanel({ district, onMarkStudied }) {
         <p className="text-sm leading-6 text-royal-950">{profile.overview}</p>
       </div>
 
-      <div className="mt-5 grid grid-cols-3 gap-2">
-        {profile.photos.map((photo) => (
-          <figure
-            key={photo.label}
-            className="overflow-hidden rounded-lg border border-desert-100 bg-white"
-          >
-            <img
-              src={photo.src}
-              alt={`${photo.label} in ${district.name}`}
-              className="aspect-[4/3] w-full object-cover"
-              loading="lazy"
-              onError={(event) => {
-                event.currentTarget.onerror = null;
-                event.currentTarget.src = photo.fallbackSrc || fallbackDistrictPhoto;
-              }}
-            />
-            <figcaption className="truncate px-2 py-1.5 text-[11px] font-bold text-desert-700">
-              {photo.label}
-            </figcaption>
-          </figure>
-        ))}
-      </div>
+      {places.length ? (
+        <div className="mt-5 rounded-lg border border-desert-100 bg-white p-4">
+          <div className="flex items-center gap-2 text-sm font-black text-desert-900">
+            <Sparkles className="h-4 w-4 text-amber-600" aria-hidden="true" />
+            Popular places
+          </div>
+          <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            {places.map((place) => {
+              const active = place.label === selectedPlace?.label;
+              return (
+                <button
+                  key={place.label}
+                  type="button"
+                  onClick={() => setSelectedPlaceLabel(place.label)}
+                  className={[
+                    "rounded-lg border px-3 py-3 text-left transition",
+                    active
+                      ? "border-royal-300 bg-royal-50 text-royal-950"
+                      : "border-desert-200 bg-desert-50 text-desert-900 hover:border-royal-200 hover:bg-white",
+                  ].join(" ")}
+                >
+                  <span className="block text-sm font-black">{place.label}</span>
+                  <span className="mt-1 block text-[11px] font-semibold uppercase tracking-wide text-desert-500">
+                    Tap for notes
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {selectedPlace ? (
+            <div className="mt-4 rounded-lg bg-desert-50 p-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="text-base font-black text-desert-900">{selectedPlace.label}</p>
+                  <p className="mt-2 text-sm leading-6 text-desert-700">
+                    {selectedPlace.description}
+                  </p>
+                </div>
+              </div>
+              {selectedPlace.tags?.length ? (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {selectedPlace.tags.map((tag) => (
+                    <Badge key={tag} color="sand">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
 
       <div className="mt-5 divide-y divide-desert-100 rounded-lg border border-desert-100 bg-desert-50/70">
         {rows.map(([label, value]) => (

@@ -10,7 +10,7 @@ export const rivers = [
     tributaries: ["Banas", "Parvati", "Kalisindh"],
     memoryHook: "Kota and Chambal are the first pair; then follow the river north-east toward Sawai Madhopur, Karauli, and Dholpur.",
     sourceNote: "Checked against India-WRIS Yamuna river system notes.",
-    path: "M75 75 C70 71 67 68 68 64 C70 59 76 56 82 53",
+    path: "M74 72 C71 69 69 66 68 64 C67 61 70 58 74 57 C78 56 81 55 83 53",
     color: "#1c5fc4",
   },
   {
@@ -24,7 +24,7 @@ export const rivers = [
     tributaries: ["Jawai", "Sukri", "Bandi", "Khari", "Jojari"],
     memoryHook: "Western Rajasthan plus saline downstream water points to Luni.",
     sourceNote: "Checked against Luni basin references for the Pushkar valley / Ajmer origin.",
-    path: "M49 51 C44 54 39 57 34 60 C29 63 25 68 24 74",
+    path: "M49 52 C45 54 41 56 36 59 C31 62 27 65 25 68 C24 71 26 73 29 75",
     color: "#0f766e",
   },
   {
@@ -38,7 +38,7 @@ export const rivers = [
     tributaries: ["Berach", "Kothari", "Menali", "Khari", "Dai", "Morel"],
     memoryHook: "Banas is the Kumbhalgarh-side river that travels across Rajasthan to meet Chambal at Rameshwar.",
     sourceNote: "Checked against India-WRIS Yamuna river system notes.",
-    path: "M45 64 C51 60 57 57 63 58 C68 59 71 61 74 63",
+    path: "M46 64 C50 62 54 59 58 57 C62 56 66 57 69 59 C71 60 73 59 74 58",
     color: "#2563eb",
   },
   {
@@ -52,7 +52,7 @@ export const rivers = [
     tributaries: ["Som", "Anas", "Jakham"],
     memoryHook: "Banswara and Mahi form the strongest southern Rajasthan river pair.",
     sourceNote: "Checked against India-WRIS Mahi basin report.",
-    path: "M60 79 C56 81 52 83 47 82",
+    path: "M58 78 C55 80 53 82 51 84 C48 84 45 82 43 80",
     color: "#7c3aed",
   },
   {
@@ -66,7 +66,7 @@ export const rivers = [
     tributaries: ["Wakal", "Sei", "Harnav"],
     memoryHook: "Remember it as a south-west Rajasthan to Gujarat river.",
     sourceNote: "Checked against India-WRIS Gujarat water resources notes.",
-    path: "M42 72 C39 75 36 78 33 81",
+    path: "M42 72 C39 75 36 78 33 81 C31 83 29 85 27 87",
     color: "#be185d",
   },
   {
@@ -80,7 +80,7 @@ export const rivers = [
     tributaries: ["Seasonal Shivalik-fed streams"],
     memoryHook: "Northern Rajasthan plus old river course questions point to Ghaggar.",
     sourceNote: "Checked against Rajasthan Hanumangarh district gazetteer notes.",
-    path: "M43 13 C39 12 35 11 31 10",
+    path: "M41 12 C38 12 35 11 31 10 C29 10 27 9 25 8",
     color: "#b45309",
   },
 ];

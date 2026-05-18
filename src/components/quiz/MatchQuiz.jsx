@@ -4,9 +4,11 @@ import Badge from "../common/Badge";
 import Button from "../common/Button";
 import Card from "../common/Card";
 import ProgressBar from "../common/ProgressBar";
+import { useLanguage } from "../../contexts/LanguageContext";
 import { shuffleArray } from "../../utils/quizHelpers";
 
 export default function MatchQuiz({ quiz, onComplete }) {
+  const { t } = useLanguage();
   const [answers, setAnswers] = useState({});
   const [checked, setChecked] = useState(false);
   const options = useMemo(() => shuffleArray(quiz?.pairs?.map((pair) => pair.right) || []), [quiz]);
@@ -36,10 +38,10 @@ export default function MatchQuiz({ quiz, onComplete }) {
     <Card className="p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <Badge color="blue">{quiz.category}</Badge>
-          <Badge color="sand">match</Badge>
+          <Badge color="blue">{t(`category.${quiz.category}`)}</Badge>
+          <Badge color="sand">{t("type.match")}</Badge>
         </div>
-        <span className="text-sm font-bold text-desert-600">{total} pairs</span>
+        <span className="text-sm font-bold text-desert-600">{t("pairs", { total })}</span>
       </div>
       <h2 className="mt-4 text-2xl font-black text-desert-900">{quiz.title}</h2>
       <p className="mt-2 text-sm leading-6 text-desert-700">{quiz.prompt}</p>
@@ -75,7 +77,7 @@ export default function MatchQuiz({ quiz, onComplete }) {
                 }
                 className="h-11 rounded-lg border border-desert-200 bg-white px-3 text-sm font-semibold text-desert-900 outline-none focus:border-royal-400 focus:ring-4 focus:ring-royal-100"
               >
-                <option value="">Choose match</option>
+                <option value="">{t("chooseMatch")}</option>
                 {options.map((option) => (
                   <option key={option} value={option}>
                     {option}
@@ -91,9 +93,9 @@ export default function MatchQuiz({ quiz, onComplete }) {
         <div className="mt-6 rounded-lg border border-royal-100 bg-royal-50 p-4">
           <div className="flex items-center gap-2 font-black text-royal-900">
             <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
-            Score: {score} / {total}
+            {t("score", { score, total })}
           </div>
-          <ProgressBar className="mt-4" value={percentage} label="Match accuracy" />
+          <ProgressBar className="mt-4" value={percentage} label={t("matchAccuracy")} />
           <p className="mt-3 text-sm leading-6 text-royal-900">{quiz.explanation}</p>
         </div>
       ) : null}
@@ -101,11 +103,11 @@ export default function MatchQuiz({ quiz, onComplete }) {
       <div className="mt-6 flex flex-wrap justify-end gap-3">
         {checked ? (
           <Button variant="secondary" icon={RotateCcw} onClick={restart}>
-            Restart match
+            {t("restartMatch")}
           </Button>
         ) : (
           <Button onClick={checkAnswers}>
-            {Object.keys(answers).length === total ? "Check matches" : "Check partial matches"}
+            {Object.keys(answers).length === total ? t("checkMatches") : t("checkPartialMatches")}
           </Button>
         )}
       </div>

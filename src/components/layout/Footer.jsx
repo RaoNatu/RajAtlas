@@ -1,3 +1,4 @@
+import { Github } from "lucide-react";
 import { useLanguage } from "../../contexts/LanguageContext";
 
 export default function Footer() {
@@ -10,15 +11,16 @@ export default function Footer() {
           <p className="font-black">RajAtlas</p>
           <p className="max-w-2xl text-desert-700">{t("footerCopy")}</p>
         </div>
-        <div className="flex flex-wrap items-center gap-3 border-t border-desert-100 pt-4 font-semibold text-desert-700">
-          <span>Made with ❤️by Natu</span>
+        <div className="flex flex-col items-center gap-2 border-t border-desert-100 pt-4 text-center font-semibold text-desert-700">
+          <span>Made with ❤️ by Natu</span>
           <a
             href="https://github.com/RaoNatu"
             target="_blank"
             rel="noreferrer"
-            className="text-royal-800 hover:text-royal-900"
+            aria-label="GitHub profile for RaoNatu"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-desert-200 bg-white text-royal-800 transition hover:border-royal-300 hover:text-royal-950"
           >
-            GitHub: RaoNatu
+            <Github className="h-5 w-5" aria-hidden="true" />
           </a>
         </div>
       </div>

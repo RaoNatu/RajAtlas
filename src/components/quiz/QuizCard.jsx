@@ -2,6 +2,7 @@ import { CheckCircle2, Circle, XCircle } from "lucide-react";
 import Badge from "../common/Badge";
 import Button from "../common/Button";
 import Card from "../common/Card";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 export default function QuizCard({
   question,
@@ -14,6 +15,7 @@ export default function QuizCard({
   currentIndex,
   total,
 }) {
+  const { t } = useLanguage();
   if (!question) return null;
 
   const correct = selectedRecord?.isCorrect;
@@ -22,8 +24,8 @@ export default function QuizCard({
     <Card className="p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
-          <Badge color="blue">{question.category}</Badge>
-          <Badge color="sand">{question.type}</Badge>
+          <Badge color="blue">{t(`category.${question.category}`)}</Badge>
+          <Badge color="sand">{t(`type.${question.type}`)}</Badge>
         </div>
         <span className="text-sm font-bold text-desert-600">
           {currentIndex + 1} / {total}
@@ -80,7 +82,7 @@ export default function QuizCard({
               : "border-maroon-200 bg-maroon-50 text-maroon-900",
           ].join(" ")}
         >
-          <p className="font-black">{correct ? "Correct" : "Review this"}</p>
+          <p className="font-black">{correct ? t("correct") : t("reviewThis")}</p>
           <p className="mt-1 text-sm leading-6">{question.explanation}</p>
         </div>
       ) : null}
@@ -88,11 +90,11 @@ export default function QuizCard({
       <div className="mt-6 flex justify-end gap-3">
         {!isAnswered ? (
           <Button disabled={!selectedAnswer} onClick={() => onSubmit(selectedAnswer)}>
-            Check answer
+            {t("checkAnswer")}
           </Button>
         ) : (
           <Button onClick={onNext}>
-            {currentIndex + 1 === total ? "See result" : "Next question"}
+            {currentIndex + 1 === total ? t("seeResult") : t("nextQuestion")}
           </Button>
         )}
       </div>

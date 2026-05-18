@@ -33,6 +33,19 @@ export function handleApiError(res, error) {
     return;
   }
 
+  if (
+    error?.name === "MongoServerSelectionError" ||
+    error?.name === "MongoNetworkError" ||
+    error?.codeName === "AtlasError"
+  ) {
+    console.error(error);
+    sendJson(res, 503, {
+      error:
+        "Could not connect to MongoDB Atlas. Check MONGODB_URI, database user credentials, and Atlas Network Access.",
+    });
+    return;
+  }
+
   console.error(error);
   sendJson(res, 500, { error: "Something went wrong. Please try again." });
 }

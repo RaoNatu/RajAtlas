@@ -33,7 +33,7 @@ export default function RegionExplorer() {
       <PageHeader
         title="Region Explorer"
         description="Select a historical or cultural region and see the related districts highlighted on the map."
-        badge="Phase 1"
+        badge="Region map"
       />
 
       <div className="grid gap-6 xl:grid-cols-[280px_1fr_340px]">

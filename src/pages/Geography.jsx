@@ -121,8 +121,8 @@ export default function Geography() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageHeader
         title="Geography of Rajasthan"
-        description="Phase 2 turns physical features, rivers, lakes, soil, climate, wildlife, irrigation, tribes, and Census 2011 into map layers, visual cards, charts, and recall drills."
-        badge="Phase 2"
+        description="Explore physical features, rivers, lakes, soil, climate, wildlife, irrigation, tribes, and Census 2011 through map layers, visual cards, charts, and recall drills."
+        badge="Geography"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

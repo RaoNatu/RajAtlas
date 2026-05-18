@@ -107,7 +107,7 @@ export const cultureGallery = [
     district: "Western Rajasthan",
     visualCue: "Marwar speech region",
     memoryHook: "Marwari links Jodhpur, Marwar, and western Rajasthan.",
-    details: "Use with Marwar and western Rajasthan; future language maps can separate Marwari, Mewari, Dhundhari, Harauti, and Mewati.",
+    details: "Use with Marwar and western Rajasthan; compare it with Mewari, Dhundhari, Harauti, and Mewati.",
   },
 ];
 

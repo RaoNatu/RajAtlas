@@ -2,12 +2,12 @@ import { BookOpen, Landmark, Map, Palette, PieChart, ScrollText } from "lucide-r
 import { NavLink } from "react-router-dom";
 
 const modules = [
-  { label: "Introduction", to: "/", icon: BookOpen, phase: "Phase 1" },
-  { label: "Geography", to: "/geography", icon: Map, phase: "Phase 2" },
-  { label: "Economy", to: "/economy", icon: PieChart, phase: "Phase 3" },
-  { label: "Politics", to: "/politics", icon: Landmark, phase: "Phase 4" },
-  { label: "History", to: "/history", icon: ScrollText, phase: "Phase 5" },
-  { label: "Culture", to: "/culture", icon: Palette, phase: "Phase 6" },
+  { label: "Introduction", to: "/", icon: BookOpen, section: "Start" },
+  { label: "Geography", to: "/geography", icon: Map, section: "Maps" },
+  { label: "Economy", to: "/economy", icon: PieChart, section: "Data" },
+  { label: "Politics", to: "/politics", icon: Landmark, section: "Polity" },
+  { label: "History", to: "/history", icon: ScrollText, section: "Timeline" },
+  { label: "Culture", to: "/culture", icon: Palette, section: "Culture" },
 ];
 
 export default function Sidebar({ className = "" }) {
@@ -41,7 +41,7 @@ export default function Sidebar({ className = "" }) {
                 <Icon className="h-4 w-4" aria-hidden="true" />
                 {module.label}
               </span>
-              <span className="text-[11px] opacity-75">{module.phase}</span>
+              <span className="text-[11px] opacity-75">{module.section}</span>
             </NavLink>
           );
         })}

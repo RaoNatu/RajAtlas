@@ -53,10 +53,10 @@ export default function History() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageHeader
-        eyebrow="Phase 5"
+        eyebrow="Rajasthan history"
         title="History of Rajasthan"
         description="Study Rajasthan history through period lanes, ancient site cards, medieval kingdom anchors, movement stories, integration timeline, and recall quizzes."
-        badge="Implemented"
+        badge="History"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

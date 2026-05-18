@@ -24,6 +24,7 @@ export default function QuizArena() {
   const [category, setCategory] = useState("All");
   const [mode, setMode] = useState("single");
   const [matchId, setMatchId] = useState(matchQuizzes[0].id);
+  const [sessionKey, setSessionKey] = useState(0);
   const { recordQuizScore, setLastOpenedModule } = useProgress();
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function QuizArena() {
       <PageHeader
         title="Quiz Arena"
         description="Practice Rajasthan Introduction with MCQs, true or false, matching, region-to-district, and district info questions."
-        badge="Phase 1"
+        badge="Practice"
       />
 
       <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
@@ -123,11 +124,10 @@ export default function QuizArena() {
           <div className="mt-6 rounded-lg bg-desert-50 p-4">
             <div className="flex items-center gap-2 font-black text-desert-900">
               <ListChecks className="h-4 w-4 text-royal-700" aria-hidden="true" />
-              Local score tracking
+              Score tracking
             </div>
             <p className="mt-2 text-sm leading-6 text-desert-700">
-              Scores are stored in the browser for the Progress page. No backend is
-              used in Phase 1.
+              Completed quizzes update your Progress page and Revision Lab analytics.
             </p>
           </div>
         </Card>
@@ -139,30 +139,30 @@ export default function QuizArena() {
           </div>
 
           {mode === "map" ? (
-            <MapDistrictQuiz onComplete={recordQuizScore} />
+            <MapDistrictQuiz key={`map-${sessionKey}`} onComplete={recordQuizScore} />
           ) : mode === "match" ? (
             selectedMatchQuiz ? (
               <MatchQuiz
-                key={`${category}-${selectedMatchQuiz.id}`}
+                key={`${category}-${selectedMatchQuiz.id}-${sessionKey}`}
                 quiz={selectedMatchQuiz}
                 onComplete={recordQuizScore}
               />
             ) : (
               <EmptyState
                 title="No matching quiz in this category"
-                description="Choose another category or add a new match quiz in src/data/quizzes.js."
+                description="Choose another category or switch to a different quiz mode."
               />
             )
           ) : filteredSingleQuestions.length ? (
             mode === "truefalse" ? (
               <TrueFalseQuiz
-                key={`${category}-${mode}`}
+                key={`${category}-${mode}-${sessionKey}`}
                 questions={filteredSingleQuestions}
                 onComplete={recordQuizScore}
               />
             ) : (
               <MCQQuiz
-                key={`${category}-${mode}`}
+                key={`${category}-${mode}-${sessionKey}`}
                 questions={filteredSingleQuestions}
                 quizId={`${category}-${mode}`}
                 onComplete={recordQuizScore}
@@ -171,7 +171,7 @@ export default function QuizArena() {
           ) : (
             <EmptyState
               title="No questions available"
-              description="Add questions for this category and mode in src/data/quizzes.js."
+              description="Choose another category or switch to a different quiz mode."
             />
           )}
 
@@ -179,15 +179,18 @@ export default function QuizArena() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-lg font-black text-desert-900">
-                  Ready for later quiz modes
+                  Practice controls
                 </h3>
                 <p className="mt-1 text-sm leading-6 text-desert-700">
-                  Drag and drop, map pin, timeline ordering, fill in the blank,
-                  and speed rounds can plug into this arena.
+                  Restart the current drill instantly or switch categories from the setup panel.
                 </p>
               </div>
-              <Button variant="secondary" icon={Repeat2} disabled>
-                Future modes
+              <Button
+                variant="secondary"
+                icon={Repeat2}
+                onClick={() => setSessionKey((value) => value + 1)}
+              >
+                Retake current set
               </Button>
             </div>
           </Card>

@@ -14,6 +14,8 @@ const Politics = lazy(() => import("./pages/Politics"));
 const History = lazy(() => import("./pages/History"));
 const Culture = lazy(() => import("./pages/Culture"));
 const AdvancedLearning = lazy(() => import("./pages/AdvancedLearning"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
 
 export default function App() {
   return (
@@ -34,6 +36,9 @@ export default function App() {
             <Route path="/history" element={<History />} />
             <Route path="/culture" element={<Culture />} />
             <Route path="/learn" element={<AdvancedLearning />} />
+            <Route path="/login" element={<Auth />} />
+            <Route path="/register" element={<Auth />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

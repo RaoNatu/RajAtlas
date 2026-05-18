@@ -6,17 +6,25 @@ export default function RajasthanMap({
   onSelectDistrict,
   selectedRegion,
   visibleDistricts = districts,
+  districtFillMap,
+  highlightedDistrictIds: customHighlightedDistrictIds,
+  emphasizedDistrictIds: customEmphasizedDistrictIds,
+  lineFeatures = [],
   className = "",
 }) {
-  const highlightedDistrictIds = selectedRegion?.districts || [];
+  const highlightedDistrictIds = customHighlightedDistrictIds || selectedRegion?.districts || [];
   const regionFillMap = selectedRegion
     ? Object.fromEntries(selectedRegion.districts.map((id) => [id, selectedRegion.color]))
     : {};
-  const emphasizedDistrictIds = selectedRegion
-    ? highlightedDistrictIds
-    : selectedDistrictId
-      ? [selectedDistrictId]
-      : [];
+  const emphasizedDistrictIds =
+    customEmphasizedDistrictIds ||
+    (selectedRegion
+      ? highlightedDistrictIds
+      : selectedDistrictId
+        ? [selectedDistrictId]
+        : []);
+  const fillMap =
+    districtFillMap && Object.keys(districtFillMap).length ? districtFillMap : regionFillMap;
 
   return (
     <SvgDistrictMap
@@ -24,7 +32,8 @@ export default function RajasthanMap({
       visibleDistricts={visibleDistricts}
       highlightedDistrictIds={highlightedDistrictIds}
       emphasizedDistrictIds={emphasizedDistrictIds}
-      districtFillMap={regionFillMap}
+      districtFillMap={fillMap}
+      lineFeatures={lineFeatures}
       onSelectDistrict={onSelectDistrict}
       className={className}
     />

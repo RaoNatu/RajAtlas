@@ -210,7 +210,7 @@ export const introFacts = [
     category: "Symbols",
     title: "State tree",
     summary: "Khejri is Rajasthan's state tree.",
-    detail: "Future culture cards should connect Khejri with Bishnoi traditions and desert ecology.",
+    detail: "Khejri connects state symbols with Bishnoi traditions and desert ecology.",
     sourceStatus: "State-symbol source checked",
   },
   {
@@ -259,7 +259,7 @@ export const introFacts = [
     title: "Historical regions",
     summary: "Rajasthan can be remembered through Mewar, Marwar, Hadoti, Shekhawati, Dhundhar, Mewat, Vagad, Godwar, and Ajmer-Merwara.",
     detail: "The Region Explorer turns these into district clusters so students memorize locations, not just names.",
-    sourceStatus: "Phase 1 region data",
+    sourceStatus: "Region deck",
   },
   ...rajasthanFirsts.map((item) => ({
     id: item.id,

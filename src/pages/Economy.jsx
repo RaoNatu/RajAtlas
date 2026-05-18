@@ -121,8 +121,8 @@ export default function Economy() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageHeader
         title="Economy of Rajasthan"
-        description="Phase 3 adds agriculture, minerals, industries, power, transport, and animal husbandry as district-shaped SVG map layers with charts and recall drills."
-        badge="Phase 3"
+        description="Study agriculture, minerals, industries, power, transport, and animal husbandry as district-shaped map layers with charts and recall drills."
+        badge="Economy"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -358,7 +358,7 @@ function EconomyList({ title, items, renderMeta, onMark }) {
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-sm font-bold uppercase tracking-wide text-royal-800">
-            Phase 3
+            Economy drill
           </p>
           <h2 className="mt-2 text-2xl font-black text-desert-900">{title}</h2>
         </div>

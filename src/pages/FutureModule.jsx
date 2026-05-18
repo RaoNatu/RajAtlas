@@ -15,9 +15,9 @@ export default function FutureModule({
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageHeader
         title={title}
-        eyebrow="Future module"
+        eyebrow="Rajasthan GK"
         description={description}
-        badge={phase}
+        badge="Study module"
       />
 
       <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
@@ -40,13 +40,13 @@ export default function FutureModule({
         </Card>
 
         <Card className="p-6">
-          <Badge color="gold">Architecture ready</Badge>
+          <Badge color="gold">Study path</Badge>
           <h2 className="mt-4 text-2xl font-black text-desert-900">
-            Data first, UI reusable
+            Focused topic groups
           </h2>
           <p className="mt-3 text-sm leading-6 text-desert-700">
-            This page is intentionally a placeholder. Add data in the matching file
-            under src/data, then reuse map, card, quiz, chart, and progress components.
+            This section groups related Rajasthan GK topics so learners can move
+            from overview to practice without losing context.
           </p>
           <div className="mt-5 rounded-lg bg-royal-50 p-4 text-sm leading-6 text-royal-900">
             {nextStep}
@@ -57,8 +57,8 @@ export default function FutureModule({
       <div className="mt-8">
         <EmptyState
           icon={Database}
-          title={`${title} is scheduled for ${phase}`}
-          description="Phase 1 only builds the Rajasthan Introduction module. This placeholder keeps routing and architecture ready without adding future chapter content yet."
+          title={`${title} study material`}
+          description="Choose a topic above to begin building your revision trail."
         />
       </div>
     </div>

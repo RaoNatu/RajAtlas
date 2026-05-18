@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Menu, Sparkles, X } from "lucide-react";
+import { Landmark, LogIn, Menu, UserRound, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 const navItems = [
   { label: "Home", to: "/" },
@@ -21,7 +22,14 @@ const moduleItems = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const allItems = [...navItems, ...moduleItems];
+  const { user } = useAuth();
+  const accountItems = user
+    ? [{ label: "Dashboard", to: "/dashboard" }]
+    : [
+        { label: "Log in", to: "/login" },
+        { label: "Register", to: "/register" },
+      ];
+  const allItems = [...navItems, ...moduleItems, ...accountItems];
 
   const linkClasses = ({ isActive }) =>
     [
@@ -32,18 +40,18 @@ export default function Navbar() {
     ].join(" ");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-desert-200/80 bg-desert-50/92 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-desert-200/80 bg-white/92 backdrop-blur-xl">
       <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <NavLink to="/" className="flex min-w-0 items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-desert-900 text-amber-300 shadow-sm">
-            <Sparkles className="h-5 w-5" aria-hidden="true" />
+          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-royal-900 text-amber-300 shadow-sm">
+            <Landmark className="h-5 w-5" aria-hidden="true" />
           </span>
           <span className="leading-tight">
             <span className="block text-sm font-black uppercase tracking-wide text-desert-900">
               RajAtlas
             </span>
             <span className="block text-xs font-semibold text-royal-800">
-              Rajasthan GK by Natu
+              Rajasthan GK Atlas
             </span>
           </span>
         </NavLink>
@@ -75,6 +83,22 @@ export default function Navbar() {
               {item.label}
             </NavLink>
           ))}
+          <div className="mx-2 h-6 w-px bg-desert-200" />
+          {user ? (
+            <NavLink to="/dashboard" className={linkClasses}>
+              <span className="inline-flex items-center gap-2">
+                <UserRound className="h-4 w-4" aria-hidden="true" />
+                Dashboard
+              </span>
+            </NavLink>
+          ) : (
+            <NavLink to="/login" className={linkClasses}>
+              <span className="inline-flex items-center gap-2">
+                <LogIn className="h-4 w-4" aria-hidden="true" />
+                Log in
+              </span>
+            </NavLink>
+          )}
         </div>
       </nav>
 

@@ -147,6 +147,6 @@ export const lakes = [
 
 export const lakesModule = {
   phase: 2,
-  status: "Phase 2 seed data",
+  status: "Expanded lake learning data",
   filters: ["Natural", "Artificial", "Saltwater", "Freshwater"],
 };

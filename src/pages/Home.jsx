@@ -8,6 +8,7 @@ import {
   PieChart,
   ShieldCheck,
   Trophy,
+  UserRound,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/common/Button";
@@ -20,7 +21,10 @@ import TopicCard from "../components/learning/TopicCard";
 import { currentDistrictIds, districts } from "../data/districts";
 import { introFacts } from "../data/introFacts";
 import { regions } from "../data/regions";
+import { useAuth } from "../contexts/AuthContext";
 import { useProgress } from "../hooks/useProgress";
+import hawaMahal from "../assets/photos/hawa-mahal.jpg";
+import mehrangarhFort from "../assets/photos/mehrangarh-fort.jpg";
 
 const modules = [
   {
@@ -67,25 +71,29 @@ const modules = [
 
 export default function Home() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { progress, completionPercentage, markTopicComplete } = useProgress();
   const challengeDone = progress.completedTopics?.includes("daily-district-challenge");
 
   return (
     <div>
-      <section className="atlas-pattern relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="h-full w-full bg-[linear-gradient(135deg,transparent_0%,rgba(255,248,236,0.14)_45%,transparent_46%),repeating-linear-gradient(90deg,rgba(255,248,236,0.16)_0,rgba(255,248,236,0.16)_1px,transparent_1px,transparent_36px)]" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-4 py-14 text-white sm:px-6 lg:px-8 lg:py-20">
+      <section className="relative min-h-[72vh] overflow-hidden bg-desert-900">
+        <img
+          src={hawaMahal}
+          alt="Hawa Mahal in Jaipur"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-desert-900/84 via-desert-900/38 to-royal-900/72" />
+        <div className="relative mx-auto flex min-h-[72vh] max-w-7xl flex-col justify-end px-4 pb-10 pt-20 text-white sm:px-6 lg:px-8 lg:pb-14 lg:pt-28">
           <div className="max-w-4xl">
-            <Badge color="gold">Phases 1-7 local build</Badge>
+            <Badge color="gold">Rajasthan GK companion</Badge>
             <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
               RajAtlas
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-8 text-desert-50 sm:text-lg">
-              Learn Rajasthan GK visually through interactive maps, region
-              clusters, quiz repetition, learning cards, and progress tracking
-              designed for memory.
+              A visual study workspace for Rajasthan GK: district maps, exam-ready
+              facts, revision cards, quizzes, and a secure account dashboard built
+              for repeated practice.
             </p>
             <div className="mt-8 grid w-[calc(100vw-3rem)] max-w-xl gap-3 sm:flex sm:w-auto sm:flex-wrap">
               <Button
@@ -118,6 +126,14 @@ export default function Home() {
                 onClick={() => navigate("/learn")}
               >
                 Revision Lab
+              </Button>
+              <Button
+                className="w-full sm:w-auto"
+                variant="secondary"
+                icon={UserRound}
+                onClick={() => navigate(user ? "/dashboard" : "/register")}
+              >
+                {user ? "Dashboard" : "Create Account"}
               </Button>
             </div>
           </div>
@@ -162,7 +178,7 @@ export default function Home() {
           <StatsCard
             label="Quiz attempts"
             value={progress.quizScores?.length || 0}
-            helper="Saved locally in this browser."
+            helper="Feeds the progress and revision dashboards."
             icon={Brain}
             tone="green"
           />
@@ -185,7 +201,7 @@ export default function Home() {
             </h2>
           </div>
           <p className="max-w-2xl text-sm leading-6 text-desert-700">
-            Modules now use data-first pages so the project can keep growing chapter by chapter.
+            Move from map memory to facts, then reinforce weak areas with quizzes and flashcards.
           </p>
         </div>
 
@@ -194,6 +210,34 @@ export default function Home() {
             <TopicCard key={module.title} {...module} />
           ))}
         </div>
+
+        <section className="mt-12 overflow-hidden rounded-lg border border-desert-200 bg-white shadow-soft">
+          <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
+            <img
+              src={mehrangarhFort}
+              alt="Mehrangarh Fort in Jodhpur"
+              className="h-full min-h-[320px] w-full object-cover"
+            />
+            <div className="p-6 sm:p-8 lg:p-10">
+              <Badge color="maroon">Built for recall</Badge>
+              <h2 className="mt-4 text-3xl font-black text-desert-900">
+                Study Rajasthan as places, not paragraphs
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-desert-700 sm:text-base">
+                RajAtlas connects forts, rivers, districts, polity roles, economy
+                anchors, and culture clues to a map-first learning flow. The result
+                feels closer to a study desk than a static notes page.
+              </p>
+              <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                {["Map anchors", "Fast drills", "Account controls"].map((item) => (
+                  <div key={item} className="rounded-lg bg-desert-50 p-4">
+                    <p className="font-black text-desert-900">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
         <Card className="mt-10 overflow-hidden">
           <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">

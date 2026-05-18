@@ -53,10 +53,10 @@ export default function Politics() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageHeader
-        eyebrow="Phase 4"
+        eyebrow="Rajasthan polity"
         title="Politics and Administration"
         description="Learn Rajasthan polity through role cards, appointment-power flow, High Court anchors, local governance tiers, and quick recall quizzes."
-        badge="Implemented"
+        badge="Polity"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

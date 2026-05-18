@@ -8,6 +8,9 @@ export default function MapControls({
   activeLayer = "Districts",
   onLayerChange,
   onReset,
+  onZoomToggle,
+  onCycleLayer,
+  zoomed = false,
   selectedRegion,
 }) {
   return (
@@ -21,21 +24,17 @@ export default function MapControls({
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {layers.map((layer) => {
-          const isFuture = ["Rivers", "Soil", "Climate"].includes(layer);
-          return (
-            <Button
-              key={layer}
-              variant={activeLayer === layer ? "primary" : "outline"}
-              size="sm"
-              disabled={isFuture}
-              onClick={() => onLayerChange(layer)}
-              title={isFuture ? "Future geography layer" : `${layer} layer`}
-            >
-              {layer}
-            </Button>
-          );
-        })}
+        {layers.map((layer) => (
+          <Button
+            key={layer}
+            variant={activeLayer === layer ? "primary" : "outline"}
+            size="sm"
+            onClick={() => onLayerChange(layer)}
+            title={`${layer} layer`}
+          >
+            {layer}
+          </Button>
+        ))}
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -52,21 +51,21 @@ export default function MapControls({
           variant="ghost"
           size="sm"
           icon={Maximize2}
-          disabled
-          title="Future zoom control"
+          onClick={onZoomToggle}
+          title={zoomed ? "Show map with district panel" : "Focus the map"}
           className="shrink-0"
         >
-          Zoom
+          {zoomed ? "Split view" : "Focus map"}
         </Button>
         <Button
           variant="ghost"
           size="sm"
           icon={RotateCcw}
-          disabled
-          title="Future animation replay"
+          onClick={onCycleLayer}
+          title="Move to the next map layer"
           className="shrink-0"
         >
-          Replay
+          Next layer
         </Button>
       </div>
     </div>

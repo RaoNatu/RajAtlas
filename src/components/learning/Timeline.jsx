@@ -4,7 +4,7 @@ export default function Timeline({ items = [] }) {
   if (!items.length) {
     return (
       <div className="rounded-lg border border-dashed border-desert-300 bg-desert-50 p-5 text-sm font-semibold text-desert-700">
-        Timeline data will appear here in a future phase.
+        Timeline items will appear here when this section has entries.
       </div>
     );
   }

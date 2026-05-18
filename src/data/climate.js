@@ -61,6 +61,6 @@ export const rainfallComparison = [
 
 export const climateModule = {
   phase: 2,
-  status: "Phase 2 seed data",
+  status: "Expanded climate learning data",
   visualizations: ["Rainfall", "Temperature", "Monsoon", "Aravalli influence"],
 };

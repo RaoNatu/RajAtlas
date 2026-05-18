@@ -41,6 +41,78 @@ export const flashcards = [
     front: "Which lake is a key salt lake memory anchor?",
     back: "Sambhar Lake.",
   },
+  {
+    id: "flash-guru-shikhar",
+    category: "Geography",
+    front: "Highest peak of the Aravalli Range?",
+    back: "Guru Shikhar near Mount Abu.",
+  },
+  {
+    id: "flash-luni",
+    category: "Geography",
+    front: "Which Rajasthan river becomes more saline downstream?",
+    back: "Luni, the western Rajasthan river anchor.",
+  },
+  {
+    id: "flash-keoladeo",
+    category: "Geography",
+    front: "Keoladeo Ghana National Park belongs to which district?",
+    back: "Bharatpur.",
+  },
+  {
+    id: "flash-ranthambore",
+    category: "Geography",
+    front: "Ranthambore is associated with which district?",
+    back: "Sawai Madhopur.",
+  },
+  {
+    id: "flash-khejri",
+    category: "Symbols",
+    front: "Rajasthan's state tree?",
+    back: "Khejri.",
+  },
+  {
+    id: "flash-rohida",
+    category: "Symbols",
+    front: "Rajasthan's state flower?",
+    back: "Rohida.",
+  },
+  {
+    id: "flash-panchayati-raj",
+    category: "Politics",
+    front: "Where was Panchayati Raj first inaugurated in Rajasthan?",
+    back: "Nagaur.",
+  },
+  {
+    id: "flash-haldighati",
+    category: "History",
+    front: "Battle of Haldighati is remembered with which ruler?",
+    back: "Maharana Pratap.",
+  },
+  {
+    id: "flash-jaipur-founder",
+    category: "History",
+    front: "Who founded Jaipur?",
+    back: "Sawai Jai Singh II.",
+  },
+  {
+    id: "flash-khetri",
+    category: "Economy",
+    front: "Khetri is famous for which mineral?",
+    back: "Copper.",
+  },
+  {
+    id: "flash-blue-pottery",
+    category: "Culture",
+    front: "Blue pottery is strongly associated with which city?",
+    back: "Jaipur.",
+  },
+  {
+    id: "flash-kota-doria",
+    category: "Culture",
+    front: "Kota Doria belongs to which craft tradition?",
+    back: "Textile weaving.",
+  },
 ];
 
 export const dailyChallenges = [
@@ -62,6 +134,24 @@ export const dailyChallenges = [
     rewardXp: 20,
     category: "Culture",
   },
+  {
+    id: "daily-symbols",
+    title: "Recall the state bird, animal, tree, and flower",
+    rewardXp: 20,
+    category: "Symbols",
+  },
+  {
+    id: "daily-rivers",
+    title: "Trace Chambal, Luni, Banas, and Mahi on the map",
+    rewardXp: 25,
+    category: "Geography",
+  },
+  {
+    id: "daily-economy",
+    title: "Match 4 districts to minerals or industries",
+    rewardXp: 20,
+    category: "Economy",
+  },
 ];
 
 export const achievementBadges = [
@@ -78,4 +168,7 @@ export const revisionPrompts = [
   "Flip five flashcards, then mark the ones you missed as bookmarks.",
   "Trace one region and say its anchor city aloud.",
   "Write a one-line memory hook for one fort, one river, and one polity role.",
+  "Pick one map layer and explain why three districts share the same color.",
+  "Retake the lowest scoring quiz category before adding new bookmarks.",
+  "Name one culture fact from Jaipur, Jodhpur, Ajmer, and Kota.",
 ];

@@ -1,14 +1,15 @@
 # RajAtlas
 
-RajAtlas is a local-first Rajasthan GK learning app built with React and Vite. It turns districts, regions, geography, economy, polity, history, culture, quizzes, bookmarks, and progress tracking into a visual study flow for exam preparation.
+RajAtlas is a production-ready Rajasthan GK learning app built with React, Vite, and Postgres-backed account authentication. It turns districts, regions, geography, economy, polity, history, culture, quizzes, bookmarks, and progress tracking into a visual study flow for exam preparation.
 
 ## Features
 
 - Interactive Rajasthan district and region exploration.
 - Data-driven geography, economy, politics, history, and culture modules.
-- Quiz practice, flashcards, bookmarks, daily challenges, and local progress tracking.
+- Quiz practice, flashcards, bookmarks, daily challenges, and progress tracking.
+- Secure registration, login, account dashboard, email changes, password changes, and account deletion.
 - Responsive dashboard-style UI built for repeated study sessions.
-- Browser-only persistence through localStorage; no backend is required.
+- Vercel API routes for Postgres-backed user accounts.
 
 ## Tech Stack
 
@@ -19,6 +20,7 @@ RajAtlas is a local-first Rajasthan GK learning app built with React and Vite. I
 - Framer Motion
 - Recharts
 - Lucide React
+- pg
 
 ## Getting Started
 
@@ -46,6 +48,15 @@ Preview the production build:
 npm run preview
 ```
 
+Configure authentication for production:
+
+```powershell
+$env:DATABASE_URL="postgresql://user:password@host:5432/database"
+npm run build
+```
+
+Vercel deployments can use `DATABASE_URL`, `POSTGRES_URL`, or `POSTGRES_PRISMA_URL`.
+
 ## Project Structure
 
 ```text
@@ -55,6 +66,8 @@ src/
   hooks/         localStorage, progress, and quiz state hooks
   pages/         Route-level learning experiences
   utils/         Search, quiz, map, and progress helpers
+api/
+  auth/          Serverless authentication endpoints
 ```
 
 ## Git Hygiene

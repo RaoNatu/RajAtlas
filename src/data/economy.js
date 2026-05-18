@@ -371,6 +371,6 @@ export const economyTopics = [
 
 export const economyModule = {
   phase: 3,
-  status: "Phase 3 seed data",
+  status: "Expanded economy learning data",
   dashboards: ["Agriculture", "Minerals", "Industries", "Power", "Transport"],
 };

@@ -61,8 +61,8 @@ export default function Progress() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageHeader
         title="Progress Tracker"
-        description="A localStorage-based learning dashboard for completion, XP, bookmarks, quiz scores, strong areas, weak areas, and recent study activity."
-        badge="Phase 7"
+        description="A personal learning dashboard for completion, XP, bookmarks, quiz scores, strong areas, weak areas, and recent study activity."
+        badge="Dashboard"
         actions={
           <Button variant="secondary" icon={RotateCcw} onClick={resetProgress}>
             Reset progress
@@ -88,7 +88,7 @@ export default function Progress() {
         <StatsCard
           label="Quiz attempts"
           value={progress.quizScores?.length || 0}
-          helper="Saved in this browser."
+          helper="Used for score trends and revision priorities."
           icon={BarChart3}
           tone="sand"
         />

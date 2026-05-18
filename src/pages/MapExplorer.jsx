@@ -11,11 +11,25 @@ import MapControls from "../components/map/MapControls";
 import MapLegend from "../components/map/MapLegend";
 import RajasthanMap from "../components/map/RajasthanMap";
 import FactCard from "../components/learning/FactCard";
+import { climateZones } from "../data/climate";
 import { annulled2024DistrictIds, currentDistrictIds, districts } from "../data/districts";
 import { factCategories, introFacts } from "../data/introFacts";
 import { regions } from "../data/regions";
+import { rivers } from "../data/rivers";
+import { soils } from "../data/soil";
 import { useProgress } from "../hooks/useProgress";
 import { buildMapSearchResults } from "../utils/mapHelpers";
+
+const layerOrder = ["Districts", "Regions", "Divisions", "Rivers", "Soil", "Climate"];
+const divisionColors = {
+  Ajmer: "#f59e0b",
+  Bharatpur: "#14b8a6",
+  Bikaner: "#ef4444",
+  Jaipur: "#2563eb",
+  Jodhpur: "#a855f7",
+  Kota: "#16a34a",
+  Udaipur: "#db2777",
+};
 
 export default function MapExplorer() {
   const [selectedDistrict, setSelectedDistrict] = useState(districts[0]);
@@ -23,6 +37,7 @@ export default function MapExplorer() {
   const [activeLayer, setActiveLayer] = useState("Districts");
   const [selectedRegionId, setSelectedRegionId] = useState("");
   const [factCategory, setFactCategory] = useState("All");
+  const [mapFocus, setMapFocus] = useState(false);
   const {
     progress,
     markTopicComplete,
@@ -35,33 +50,46 @@ export default function MapExplorer() {
 
   const selectedRegion = regions.find((region) => region.id === selectedRegionId);
   const visibleDistricts = useMemo(() => buildMapSearchResults(query), [query]);
+  const layerView = useMemo(
+    () => buildLayerView(activeLayer, selectedRegion),
+    [activeLayer, selectedRegion],
+  );
   const filteredFacts = useMemo(() => {
     if (factCategory === "All") return introFacts;
     return introFacts.filter((fact) => fact.category === factCategory);
   }, [factCategory]);
+
+  function resetExplorer() {
+    setQuery("");
+    setSelectedRegionId("");
+    setSelectedDistrict(districts[0]);
+    setActiveLayer("Districts");
+    setMapFocus(false);
+  }
+
+  function cycleLayer() {
+    const nextIndex = (layerOrder.indexOf(activeLayer) + 1) % layerOrder.length;
+    setActiveLayer(layerOrder[nextIndex]);
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageHeader
         title="Interactive Rajasthan District Map"
         description="Click districts, search by name, highlight regions, and turn basic Rajasthan Introduction facts into studied topics."
-        badge="Phase 1"
+        badge="Live atlas"
         actions={
           <Button
             variant="secondary"
             icon={MapPinned}
-            onClick={() => {
-              setQuery("");
-              setSelectedRegionId("");
-              setSelectedDistrict(districts[0]);
-            }}
+            onClick={resetExplorer}
           >
             Reset explorer
           </Button>
         }
       />
 
-      <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
+      <div className={mapFocus ? "grid gap-6" : "grid gap-6 xl:grid-cols-[1fr_360px]"}>
         <div className="space-y-4">
           <Card className="p-4">
             <div className="mb-3 flex flex-wrap gap-2">
@@ -93,6 +121,9 @@ export default function MapExplorer() {
             activeLayer={activeLayer}
             selectedRegion={selectedRegion}
             onLayerChange={setActiveLayer}
+            onZoomToggle={() => setMapFocus((value) => !value)}
+            onCycleLayer={cycleLayer}
+            zoomed={mapFocus}
             onReset={() => {
               setQuery("");
               setSelectedRegionId("");
@@ -103,23 +134,38 @@ export default function MapExplorer() {
             selectedDistrictId={selectedDistrict?.id}
             selectedRegion={selectedRegion}
             visibleDistricts={visibleDistricts}
+            districtFillMap={layerView.districtFillMap}
+            highlightedDistrictIds={layerView.highlightedDistrictIds}
+            emphasizedDistrictIds={layerView.emphasizedDistrictIds}
+            lineFeatures={layerView.lineFeatures}
             onSelectDistrict={setSelectedDistrict}
           />
-          <MapLegend selectedRegion={selectedRegion} />
+          <MapLegend selectedRegion={selectedRegion} items={layerView.legendItems} />
 
           {query && !visibleDistricts.length ? (
             <EmptyState
               title="No district found"
-              description="Try another spelling or add the missing district in src/data/districts.js."
+              description="Try another spelling, search a nearby region, or clear the filter."
             />
           ) : null}
         </div>
 
-        <DistrictInfoPanel
-          district={selectedDistrict}
-          onMarkStudied={markTopicComplete}
-        />
+        {mapFocus ? null : (
+          <DistrictInfoPanel
+            district={selectedDistrict}
+            onMarkStudied={markTopicComplete}
+          />
+        )}
       </div>
+
+      {mapFocus ? (
+        <div className="mt-6">
+          <DistrictInfoPanel
+            district={selectedDistrict}
+            onMarkStudied={markTopicComplete}
+          />
+        </div>
+      ) : null}
 
       <section className="mt-12">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -164,14 +210,123 @@ export default function MapExplorer() {
           ))}
         </div>
 
-        <div className="mt-5 flex flex-wrap gap-2">
-          <Badge color="gold">Tip</Badge>
-          <p className="text-sm leading-6 text-desert-700">
-            Exact book facts can be added without touching UI code. Update the data
-            files and the cards, filters, map, quiz, and progress views will refresh.
-          </p>
-        </div>
+        <p className="mt-5 max-w-3xl text-sm leading-6 text-desert-700">
+          Use the filters with map layers to connect facts to their districts before marking them studied.
+        </p>
       </section>
     </div>
   );
+}
+
+function buildLayerView(activeLayer, selectedRegion) {
+  if (activeLayer === "Regions") {
+    const districtFillMap = selectedRegion
+      ? Object.fromEntries(selectedRegion.districts.map((id) => [id, selectedRegion.color]))
+      : Object.fromEntries(
+          regions.flatMap((region) =>
+            region.districts.map((districtId) => [districtId, region.color]),
+          ),
+        );
+    const legendItems = selectedRegion
+      ? [{ label: selectedRegion.name, color: selectedRegion.color, border: "#172d4f" }]
+      : regions.slice(0, 6).map((region) => ({
+          label: region.name,
+          color: region.color,
+          border: "#172d4f",
+        }));
+
+    return {
+      districtFillMap,
+      highlightedDistrictIds: selectedRegion?.districts || [],
+      emphasizedDistrictIds: selectedRegion?.districts || [],
+      lineFeatures: [],
+      legendItems,
+    };
+  }
+
+  if (activeLayer === "Divisions") {
+    return {
+      districtFillMap: Object.fromEntries(
+        districts.map((district) => [district.id, divisionColors[district.division] || "#94a3b8"]),
+      ),
+      highlightedDistrictIds: [],
+      emphasizedDistrictIds: [],
+      lineFeatures: [],
+      legendItems: Object.entries(divisionColors).map(([label, color]) => ({
+        label,
+        color,
+        border: "#172d4f",
+      })),
+    };
+  }
+
+  if (activeLayer === "Rivers") {
+    return {
+      districtFillMap: buildFeatureFillMap(rivers, 0.5),
+      highlightedDistrictIds: [],
+      emphasizedDistrictIds: rivers.flatMap((river) => river.districtIds || []),
+      lineFeatures: rivers.map((river) => ({
+        path: river.path,
+        color: river.color,
+        strokeWidth: "1.4",
+        label: river.name,
+      })),
+      legendItems: rivers.map((river) => ({
+        label: river.name,
+        color: river.color,
+        border: river.color,
+      })),
+    };
+  }
+
+  if (activeLayer === "Soil") {
+    return {
+      districtFillMap: buildFeatureFillMap(soils, 0.58),
+      highlightedDistrictIds: [],
+      emphasizedDistrictIds: [],
+      lineFeatures: [],
+      legendItems: soils.slice(0, 7).map((soil) => ({
+        label: soil.name,
+        color: soil.color,
+        border: "#172d4f",
+      })),
+    };
+  }
+
+  if (activeLayer === "Climate") {
+    return {
+      districtFillMap: buildFeatureFillMap(climateZones, 0.58),
+      highlightedDistrictIds: [],
+      emphasizedDistrictIds: [],
+      lineFeatures: [],
+      legendItems: climateZones.map((zone) => ({
+        label: zone.name,
+        color: zone.color,
+        border: "#172d4f",
+      })),
+    };
+  }
+
+  return {
+    districtFillMap: {},
+    highlightedDistrictIds: selectedRegion?.districts || [],
+    emphasizedDistrictIds: selectedRegion?.districts || [],
+    lineFeatures: [],
+    legendItems: null,
+  };
+}
+
+function buildFeatureFillMap(features, opacity = 0.5) {
+  return features.reduce((fillMap, feature) => {
+    (feature.districtIds || feature.districts || []).forEach((districtId) => {
+      fillMap[districtId] = addAlpha(feature.color || "#2563eb", opacity);
+    });
+    return fillMap;
+  }, {});
+}
+
+function addAlpha(hexColor, opacity) {
+  const value = String(hexColor || "#2563eb").replace("#", "");
+  const alpha = Math.round(opacity * 255).toString(16).padStart(2, "0");
+  return `#${value}${alpha}`;
 }

@@ -72,10 +72,10 @@ export default function Culture() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageHeader
-        eyebrow="Phase 6"
+        eyebrow="Rajasthan culture"
         title="Art and Culture of Rajasthan"
         description="Explore forts, temples, fairs, dances, instruments, paintings, handicrafts, and languages as visual memory cards with culture-specific quizzes."
-        badge="Implemented"
+        badge="Culture"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -103,7 +103,7 @@ export default function Culture() {
         <StatsCard
           label="Fair calendar"
           value={festivalCalendar.length}
-          helper="Location and month placeholders ready for source data."
+          helper="Fairs organized by place and season."
           icon={CalendarDays}
           tone="maroon"
         />
@@ -167,7 +167,7 @@ export default function Culture() {
               </div>
             ) : (
               <div className="rounded-lg border border-dashed border-desert-300 bg-desert-50 p-6 text-sm font-semibold text-desert-700">
-                Add {activeCategory} cards in src/data/culture.js to populate this gallery.
+                No cards match this filter yet. Choose another culture category.
               </div>
             )}
           </Card>
@@ -273,7 +273,7 @@ export default function Culture() {
             Fairs and festivals
           </p>
           <h2 className="mt-2 text-2xl font-black text-desert-900">
-            Festival calendar seed
+            Fairs by season
           </h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {festivalCalendar.map((festival) => (

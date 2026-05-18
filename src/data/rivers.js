@@ -47,7 +47,7 @@ export const rivers = [
     districts: ["banswara", "dungarpur"],
     districtIds: ["banswara", "dungarpur", "pratapgarh"],
     tributaries: ["Anas", "Hiran", "Chap"],
-    memoryHook: "Banswara and Mahi form the strongest Phase 2 recall pair.",
+    memoryHook: "Banswara and Mahi form one of the strongest river recall pairs.",
     path: "M61 78 C56 81 51 83 45 82",
     color: "#7c3aed",
   },
@@ -81,6 +81,6 @@ export const rivers = [
 
 export const riversModule = {
   phase: 2,
-  status: "Phase 2 seed data",
+  status: "Expanded river learning data",
   layers: ["Rivers", "Basins", "Tributaries"],
 };

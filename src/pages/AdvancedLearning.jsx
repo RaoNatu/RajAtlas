@@ -86,17 +86,17 @@ export default function AdvancedLearning() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <PageHeader
-        eyebrow="Phase 7"
+        eyebrow="Revision studio"
         title="Advanced Learning Lab"
-        description="Search the atlas, save bookmarks, revise flashcards, complete daily challenges, and track quiz analytics from localStorage."
-        badge="Local-first"
+        description="Search the atlas, save bookmarks, revise flashcards, complete daily challenges, and track quiz analytics from one focused workspace."
+        badge="Practice tools"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatsCard
           label="XP level"
           value={level}
-          helper={`${progress.xp || 0} XP collected locally.`}
+          helper={`${progress.xp || 0} XP from study, quizzes, and reviews.`}
           icon={Zap}
           tone="blue"
         />
